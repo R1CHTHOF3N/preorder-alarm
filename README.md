@@ -1,11 +1,21 @@
 # Preorder-Alarm
 
-Prüft alle 10 Minuten deutsche/EU-Shops auf Dragon-Ball-Fusion-World-Displays und schickt eine
-Discord-Nachricht, sobald etwas neu gelistet oder bestellbar wird. Läuft kostenlos auf GitHub,
-auch wenn dein PC aus ist.
+Prüft alle 10 Minuten deutsche Shops auf **englische Displays** von Dragon Ball Fusion World und
+One Piece und schickt eine Discord-Nachricht, sobald etwas neu gelistet oder bestellbar wird.
+Läuft kostenlos auf GitHub, auch wenn dein PC aus ist.
 
-**Shops:** Comic Planet, Card Collector, FantasiaCards, GoodGameGuys, TCG Corner (JP)
-**Sets:** FB12, FB13, ST03 – weitere in `check.py` unter `WATCH` eintragen.
+**Shops:** Comic Planet, Card Collector, FantasiaCards, GoodGameGuys
+
+**Serien:**
+- Dragon Ball Fusion World: FB (Booster), ST (Story Booster), SB (Manga Booster)
+- One Piece: OP (Booster), EB (Extra Booster), PRB (Premium Booster), PEB (Premium Extra Booster)
+
+Einzelne Booster, Cases, Starter Decks, Event-Tickets, Zubehör und japanische Ware werden ignoriert.
+
+**Neue Sets kommen automatisch dazu:** Das Skript merkt sich je Serie die höchste Nummer, die
+irgendein Shop listet (auch japanisch, weil die früher erscheinen), und sucht immer 2 Nummern weiter.
+Taucht z. B. FB14 auf, wird ab dann auch nach FB15 und FB16 gesucht. Eine ganz neue Serie
+(neues Kürzel) müsste man in `check.py` unter `SERIES` eintragen.
 
 | Nachricht | Bedeutung |
 |---|---|
