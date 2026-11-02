@@ -24,7 +24,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Shops prüfen
         timeout-minutes: 8 # hängt etwas, schlägt der Schritt fehl und der Alarm unten greift
@@ -37,14 +37,15 @@ jobs:
           git add state.json
           git diff --cached --quiet || (git commit -m "Stand aktualisiert" && git push)
 
-      # Discord-Meldung bei Absturz – nur beim ersten Fehlschlag, damit es nicht alle 10 Min. pingt.
+      # Discord-Meldung bei Absturz – nur beim ersten Fehlschlag, damit es nicht alle 10 Min. meldet.
       - name: Absturz melden
         if: failure()
         run: |
           prev=$(gh run list -R "$GITHUB_REPOSITORY" --workflow check.yml --status completed --limit 1 --json conclusion --jq '.[0].conclusion' || echo unknown)
           if [ "$prev" = "failure" ]; then echo "Vorheriger Lauf schon fehlgeschlagen, bereits gemeldet."; exit 0; fi
-          jq -n --arg c "@everyone ❌ **Preorder-Alarm ist abgestürzt** – solange werden KEINE Preorders erkannt! Details: <$RUN_URL>" \
-            '{content: $c, allowed_mentions: {parse: ["everyone"]}}' |
+          jq -n --arg u "$RUN_URL" \
+            '{embeds: [{title: "❌ Preorder-Alarm ist abgestürzt", url: $u, color: 15158332,
+              description: "Solange werden **keine** Preorders erkannt! Details: Titel anklicken."}], allowed_mentions: {parse: []}}' |
             curl -sSf --retry 3 -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK_URL"
 
       - name: Entwarnung nach Absturz
@@ -52,6 +53,5 @@ jobs:
         run: |
           prev=$(gh run list -R "$GITHUB_REPOSITORY" --workflow check.yml --status completed --limit 1 --json conclusion --jq '.[0].conclusion' || echo unknown)
           if [ "$prev" != "failure" ]; then exit 0; fi
-          jq -n --arg c "@everyone ✅ Preorder-Alarm läuft wieder." \
-            '{content: $c, allowed_mentions: {parse: ["everyone"]}}' |
+          jq -n '{embeds: [{title: "✅ Preorder-Alarm läuft wieder", color: 3066993}], allowed_mentions: {parse: []}}' |
             curl -sSf --retry 3 -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK_URL" || true

@@ -54,16 +54,13 @@ EXCLUDE_WORDS = [
 ]
 ENGLISH_MARKERS = ["englisch", "english", "[eng]", "[en]", "(eng)", "(en)"]
 
-# Jede Discord-Nachricht pingt alle auf dem Server (auf dem eigenen Server also dich).
-PING = "@everyone"
-
 # Ein Shop gilt erst nach so vielen Fehlversuchen hintereinander als kaputt (bei 10-Min-Takt ≈ 30 Min).
 # Einzelne Aussetzer (Timeout, kurz überlastet) lösen so keinen Fehlalarm aus.
 ERROR_ALERT_AFTER = 3
 # Danach wird alle so viele Fehlversuche erinnert (≈ 12 Stunden), solange es kaputt bleibt.
 ERROR_REMIND_EVERY = 72
 
-STATE_VERSION = 4# erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
+STATE_VERSION = 5  # erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
 HEADERS = {"User-Agent": "Mozilla/5.0 (preorder-alarm; privater Benachrichtigungs-Bot)"}
 
@@ -141,6 +138,8 @@ def code_number(code):
 SHOPIFY_ROTATION = 3
 # Die Drosselung gilt pro Adresse über ALLE Shopify-Shops – darum nie zwei Shopify-Shops gleichzeitig.
 SHOPIFY_LOCK = threading.Lock()
+# Beim ersten Lauf alle Set-Suchen auf einmal, damit die Übersicht vollständig ist.
+FULL_SCAN = False
 
 
 def shopify_price(value):
@@ -180,8 +179,8 @@ def shopify(base, raffles=False):
             raise LayoutError(f"Produktliste hat unerwartetes Format ({e})")
         time.sleep(1)
 
-        slot = int(time.time() // 600) % SHOPIFY_ROTATION
-        for code in codes[slot::SHOPIFY_ROTATION]:
+        step = 1 if FULL_SCAN else SHOPIFY_ROTATION
+        for code in codes[int(time.time() // 600) % step::step]:
             data = json_get(f"{base}/search/suggest.json?" + urllib.parse.urlencode(
                 {"q": code, "resources[type]": "product", "resources[limit]": 10}
             ))
@@ -359,12 +358,19 @@ def save_state(state):
     os.replace(tmp, STATE_FILE)  # nie eine halb geschriebene Datei hinterlassen
 
 
-def post_discord(webhook, content):
-    body = json.dumps({
-        "content": content,
-        "flags": 4,  # keine Link-Vorschau
-        "allowed_mentions": {"parse": ["everyone"]},
-    }).encode()
+# ---------------------------------------------------------------------------
+# Discord-Ausgabe: farbige Karten (Embeds) statt Fließtext
+# ---------------------------------------------------------------------------
+
+COLOR = {
+    "buy": 0x2ECC71, "raffle": 0xF1C40F, "new": 0x3498DB, "error": 0xE74C3C, "info": 0x95A5A6,
+    "Dragon Ball": 0xF39C12, "One Piece": 0xC0392B,
+}
+GAME_ICON = {"Dragon Ball": "🐉", "One Piece": "🏴‍☠️"}
+
+
+def post_discord(webhook, embeds):
+    body = json.dumps({"embeds": embeds, "allowed_mentions": {"parse": []}}).encode()
     for attempt in range(1, 6):
         req = urllib.request.Request(
             webhook, data=body, headers={**HEADERS, "Content-Type": "application/json"}
@@ -386,33 +392,40 @@ def post_discord(webhook, content):
             time.sleep(3 * attempt)
 
 
-def send_discord(messages, ping=True):
+def embed_size(embed):
+    """Discord zählt Titel, Text, Felder und Fußzeile zusammen (max. 6000 Zeichen pro Nachricht)."""
+    return (len(embed.get("title", "")) + len(embed.get("description", ""))
+            + len(embed.get("footer", {}).get("text", ""))
+            + sum(len(f["name"]) + len(f["value"]) for f in embed.get("fields", [])))
+
+
+def as_text(embed):
+    parts = [embed.get("title", ""), embed.get("description", "")]
+    parts += [f"{f['name']}: {f['value']}" for f in embed.get("fields", [])]
+    return "\n".join(p for p in parts if p)
+
+
+def send_discord(embeds):
     webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
-    print("\n\n".join(messages))
+    print("\n\n".join(as_text(e) for e in embeds))
     if not webhook:
         if os.environ.get("GITHUB_ACTIONS") == "true":
             # Auf GitHub ohne Webhook würde der Alarm stumm laufen -> lieber Lauf fehlschlagen lassen.
             sys.exit("DISCORD_WEBHOOK_URL fehlt! Secret in GitHub anlegen (siehe README).")
         print("(Testmodus: DISCORD_WEBHOOK_URL nicht gesetzt, nichts gesendet)")
         return
-    # Discord erlaubt max. 2000 Zeichen pro Nachricht. Titel und Link bleiben zusammen,
-    # gepingt wird einmal pro Meldung (nicht pro Teilstück).
-    entries = []
-    for line in "\n\n".join(messages).split("\n"):
-        if line.startswith("<http") and entries:
-            entries[-1] += "\n" + line
-        else:
-            entries.append(line[:1800])
-    chunks, current = [], PING + "\n" if ping else ""
-    for entry in entries:
-        if len(current) + len(entry) + 1 > 1900:
-            chunks.append(current)
-            current = ""
-        current += entry + "\n"
-    chunks.append(current)
-    for chunk in chunks:
-        post_discord(webhook, chunk)
-        time.sleep(1)
+    # Max. 10 Karten und 6000 Zeichen pro Nachricht -> bei Bedarf auf mehrere Nachrichten verteilen.
+    batch, size = [], 0
+    for embed in embeds:
+        s = embed_size(embed)
+        if batch and (size + s > 5500 or len(batch) == 10):
+            post_discord(webhook, batch)
+            time.sleep(1)
+            batch, size = [], 0
+        batch.append(embed)
+        size += s
+    if batch:
+        post_discord(webhook, batch)
 
 
 def main_code(item):
@@ -428,46 +441,96 @@ def main_code(item):
 
 
 def sort_key(code):
+    """Serien in der Reihenfolge von SERIES, darin die neuesten Sets zuerst."""
     prefix = re.match(r"[A-Z]+", code).group(0)
     order = [s["prefix"] for s in SERIES]
-    return (order.index(prefix) if prefix in order else 99, code_number(code))
+    return (order.index(prefix) if prefix in order else 99, -code_number(code))
 
 
 def price_de(price):
-    return re.sub(r"^(\d+)\.(\d{2})", r"\1,\2", price)
+    return "Preis folgt" if price == "?" else re.sub(r"^(\d+)\.(\d{2})", r"\1,\2", price)
 
 
-def shop_link(item):
-    # <...> um den Link verhindert die große Vorschau in Discord
-    return f"[{item['shop']}](<{item['url']}>) {price_de(item['price'])}"
+def price_value(item):
+    m = re.search(r"\d+(?:[.,]\d{1,2})?", item["price"])
+    return float(m.group(0).replace(",", ".")) if m else float("inf")
 
 
-def fmt(item):
-    return f"**{main_code(item)}** {item['game']} – {shop_link(item)}"
+def status_icon(item):
+    return "🟢" if item["available"] else "🎟️" if item.get("raffle") else "🔴"
 
 
-def overview(items):
-    lines = ["🤖 **Preorder-Alarm aktiv** – nur englische Displays  ·  🟢 bestellbar  🎟️ Verlosung  🔴 nicht bestellbar"]
+def shop_line(item):
+    return f"{status_icon(item)} [{item['shop']}]({item['url']}) · {price_de(item['price'])}"
+
+
+def now_iso():
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def notice(kind, title, description=""):
+    return {"title": title, "description": description, "color": COLOR[kind], "timestamp": now_iso()}
+
+
+def event(kind, headline, item, note=""):
+    return {
+        "title": headline[:256],
+        "url": item["url"],
+        "color": COLOR[kind],
+        "description": item["title"] + (f"\n\n{note}" if note else ""),
+        "fields": [
+            {"name": "Shop", "value": item["shop"], "inline": True},
+            {"name": "Preis", "value": price_de(item["price"]), "inline": True},
+            {"name": "Set", "value": f"{GAME_ICON.get(item['game'], '')} {main_code(item)}", "inline": True},
+        ],
+        "timestamp": now_iso(),
+    }
+
+
+def overview(items, broken=()):
+    embeds = [notice(
+        "info", "📋 Preorder-Alarm – Übersicht",
+        "🟢 bestellbar  ·  🎟️ Verlosung  ·  🔴 noch nicht / ausverkauft\n"
+        "Ändert sich etwas, kommt eine eigene Nachricht."
+        + (f"\n\n⚠️ Diesmal nicht erreichbar: {', '.join(broken)}" if broken else ""),
+    )]
     for game in GAMES:
         by_code = {}
         for item in items.values():
             if item.get("game") == game:
                 by_code.setdefault(main_code(item), []).append(item)
-        lines.append(f"\n__**{game}**__")
+        fields = []
         for code in sorted(by_code, key=sort_key):
-            shops = sorted(by_code[code], key=lambda i: (not i["available"], i["shop"]))
-            lines.append(f"**{code}**  " + "  ·  ".join(
-                ("🟢 " if i["available"] else "🎟️ " if i.get("raffle") else "🔴 ") + shop_link(i) for i in shops
-            ))
-        if not by_code:
-            lines.append("(noch nichts gefunden)")
-    lines.append(f"\n🏪 Shops: {', '.join(SHOPS)}")
-    return "\n".join(lines)
+            shops = sorted(by_code[code], key=lambda i: (not i["available"], price_value(i), i["shop"]))
+            # Feld-Limit 1024 Zeichen: lange Listen laufen in einem Feld ohne Überschrift weiter.
+            chunks = [[]]
+            for line in map(shop_line, shops):
+                if chunks[-1] and sum(len(l) + 1 for l in chunks[-1]) + len(line) > 1000:
+                    chunks.append([])
+                chunks[-1].append(line)
+            for n, chunk in enumerate(chunks):
+                fields.append({"name": f"**{code}**" if n == 0 else "\u200b", "value": "\n".join(chunk), "inline": True})
+        title = f"{GAME_ICON[game]} {game}"
+        if not fields:
+            embeds.append(notice(game, title, "Noch nichts gefunden."))
+            continue
+        # Pro Karte max. 25 Felder und lieber deutlich unter 6000 Zeichen bleiben.
+        part = {"title": title, "color": COLOR[game], "fields": []}
+        for f in fields:
+            if part["fields"] and (len(part["fields"]) == 24 or embed_size(part) + len(f["value"]) > 4500):
+                embeds.append(part)
+                part = {"title": f"{title} (Fortsetzung)", "color": COLOR[game], "fields": []}
+            part["fields"].append(f)
+        embeds.append(part)
+    embeds[-1]["footer"] = {"text": f"{len(SHOPS)} Shops: " + ", ".join(SHOPS)}
+    return embeds
 
 
 def main():
+    global FULL_SCAN
     old = load_state()
     first_run = old is None
+    FULL_SCAN = first_run
     old = old or {}
     items = dict(old.get("items", {}))
     errors = dict(old.get("errors", {}))
@@ -510,58 +573,54 @@ def main():
             if count == ERROR_ALERT_AFTER or (
                 count > ERROR_ALERT_AFTER and (count - ERROR_ALERT_AFTER) % ERROR_REMIND_EVERY == 0
             ):
-                messages.append(
-                    f"⚠️ **{name}** lässt sich seit {count} Versuchen nicht prüfen – "
-                    f"dort werden Preorders gerade NICHT erkannt!\n`{type(e).__name__}: {str(e)[:300]}`"
-                )
+                messages.append(notice(
+                    "error", f"⚠️ {name} lässt sich nicht prüfen",
+                    f"Seit {count} Versuchen Fehler – dort werden Preorders gerade **nicht** erkannt!\n"
+                    f"```{type(e).__name__}: {str(e)[:300]}```",
+                ))
             continue
         if errors.get(name, 0) >= ERROR_ALERT_AFTER:
-            messages.append(f"✅ **{name}** wird wieder geprüft.")
+            messages.append(notice("buy", f"✅ {name} wird wieder geprüft"))
         errors[name] = 0
         silent = first_run or name not in known_shops
         if silent and not first_run:
             available = [i for i in found.values() if i["available"]]
-            messages.append(
-                f"ℹ️ **{name}** wird ab jetzt überwacht ({len(found)} Displays)."
-                + "".join("\n🟢 " + fmt(i) for i in available)
-            )
+            messages.append(notice(
+                "info", f"ℹ️ {name} wird ab jetzt überwacht",
+                f"{len(found)} Displays gefunden." + "".join("\n" + shop_line(i) for i in available)[:3500],
+            ))
         known_shops.add(name)
 
         for key, item in found.items():
             before = items.get(key)
             if not silent:
                 if item.get("raffle") and not (before or {}).get("raffle"):
-                    messages.append("🎟️ **VERLOSUNG (Raffle):** " + fmt(item) + " – Teilnahme auf der Produktseite")
+                    messages.append(event("raffle", f"🎟️ Verlosung: {main_code(item)}", item,
+                                          "Teilnahme auf der Produktseite."))
                 elif before is None and item["available"]:
-                    messages.append("🟢 **JETZT BESTELLBAR:** " + fmt(item))
+                    messages.append(event("buy", f"🟢 {main_code(item)} jetzt bestellbar!", item))
                 elif before is None:
-                    messages.append("🆕 Neu gelistet (noch nicht bestellbar): " + fmt(item))
+                    messages.append(event("new", f"🆕 {main_code(item)} neu gelistet", item, "Noch nicht bestellbar."))
                 elif item["available"] and not before["available"]:
-                    messages.append("🟢 **WIEDER BESTELLBAR:** " + fmt(item))
+                    messages.append(event("buy", f"🟢 {main_code(item)} wieder bestellbar!", item))
             items[key] = item
 
     today = datetime.date.today()
     week = f"{today.isocalendar()[0]}-W{today.isocalendar()[1]:02d}"
 
     if first_run:
-        text = overview(items)
-        broken = [n for n, c in errors.items() if c]
-        if broken:
-            text += f"\n⚠️ Diesmal nicht erreichbar: {', '.join(broken)}"
-        messages = [text]
-    quiet = []
+        messages = overview(items, [n for n, c in errors.items() if c])
     if not first_run and old.get("status_week") != week:
-        # Einmal pro Woche ein Lebenszeichen (ohne Ping): Bleibt es aus, läuft der Alarm nicht mehr.
+        # Einmal pro Woche ein Lebenszeichen: Bleibt es aus, läuft der Alarm nicht mehr.
         broken = [n for n, c in errors.items() if c >= ERROR_ALERT_AFTER]
-        quiet.append(
-            f"💓 Wochen-Check: Preorder-Alarm läuft, {len(items)} Displays in {len(SHOPS)} Shops überwacht."
-            + (f" Gestört: {', '.join(broken)}" if broken else " Alle Shops ok.")
-        )
+        messages.append(notice(
+            "info", "💓 Wochen-Check",
+            f"Preorder-Alarm läuft – {len(items)} Displays in {len(SHOPS)} Shops überwacht.\n"
+            + (f"⚠️ Gestört: {', '.join(broken)}" if broken else "✅ Alle Shops ok."),
+        ))
 
     if messages:
         send_discord(messages)
-    if quiet:
-        send_discord(quiet, ping=False)
 
     save_state({
         "version": STATE_VERSION,

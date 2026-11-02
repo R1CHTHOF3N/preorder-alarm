@@ -25,12 +25,14 @@ irgendein Shop listet (auch japanisch, weil die früher erscheinen), und sucht i
 Taucht z. B. FB14 auf, wird ab dann auch nach FB15 und FB16 gesucht. Eine ganz neue Serie
 (neues Kürzel) müsste man in `check.py` unter `SERIES` eintragen.
 
-Jede Meldung pingt mit `@everyone` (auf deinem eigenen Server also dich) – außer dem 💓 Wochen-Check.
+Meldungen kommen als farbige Karten ohne `@everyone`. Damit das Handy trotzdem klingelt, den Server
+in Discord auf **Alle Nachrichten** stellen.
 
 | Nachricht | Bedeutung |
 |---|---|
-| 🟢 JETZT BESTELLBAR / WIEDER BESTELLBAR | Kaufen-Button ist da → sofort zuschlagen |
-| 🆕 Neu gelistet, noch nicht bestellbar | Seite existiert, aber nur „Benachrichtigen“ |
+| 🟢 FB13 jetzt bestellbar! / wieder bestellbar! | Kaufen-Button ist da → sofort zuschlagen |
+| 🎟️ Verlosung | Shop verlost Displays (Raffle) → auf der Produktseite teilnehmen |
+| 🆕 FB13 neu gelistet | Seite existiert, aber nur „Benachrichtigen“ |
 | ⚠️ Shop lässt sich nicht prüfen | 3× hintereinander (~30 Min.) Fehler oder Shop-Seite umgebaut; Erinnerung alle ~12 Std. |
 | ✅ Shop wird wieder geprüft | Entwarnung |
 | ❌ Preorder-Alarm ist abgestürzt | Der ganze Lauf ist fehlgeschlagen (nur beim ersten Mal gemeldet) |
@@ -69,7 +71,7 @@ Repo → **Settings** → **Secrets and variables** → **Actions** → **New re
 
 ### 4. Starten und testen
 Repo → **Actions** → (falls gefragt: Workflows aktivieren) → **Preorder-Check** → **Run workflow**.
-Nach ~1 Minute kommt in Discord die Nachricht „🤖 Preorder-Alarm ist aktiv“ mit dem aktuellen Stand.
+Nach ~1 Minute kommt in Discord die „📋 Übersicht“ mit dem aktuellen Stand.
 Danach läuft es automatisch.
 
 Handy-Benachrichtigungen: In der Discord-App den Server auf **Alle Nachrichten** stellen.
