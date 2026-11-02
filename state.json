@@ -1,0 +1,340 @@
+{
+  "errors": {
+    "Card Collector": 0,
+    "Comic Planet": 0,
+    "FantasiaCards": 0,
+    "GoodGameGuys": 0
+  },
+  "heartbeat": "2026-11-02",
+  "items": {
+    "Card Collector|https://card-collector.net/products/dragon-ball-super-card-game-fusion-world-fb12-display-englisch-ab-11-12-2026": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "120.00 €",
+      "shop": "Card Collector",
+      "title": "Dragon Ball Super Card Game - Fusion World FB12 Display Englisch ab 11.12.2026",
+      "url": "https://card-collector.net/products/dragon-ball-super-card-game-fusion-world-fb12-display-englisch-ab-11-12-2026"
+    },
+    "Card Collector|https://card-collector.net/products/dragon-ball-super-card-game-fusion-world-tory-st-02-booster-display-20-packs-englisch-ab-15-01-2027": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "120.00 €",
+      "shop": "Card Collector",
+      "title": "Dragon Ball Super Card Game - Fusion World ST-02 Story Booster Display (20 Packs) Englisch ab 15.01.2027",
+      "url": "https://card-collector.net/products/dragon-ball-super-card-game-fusion-world-tory-st-02-booster-display-20-packs-englisch-ab-15-01-2027"
+    },
+    "Card Collector|https://card-collector.net/products/one-piece-card-game-eb-06-extra-booster-display-24-packs-englisch-ab-29-01-2026": {
+      "available": false,
+      "game": "One Piece",
+      "price": "120.00 €",
+      "shop": "Card Collector",
+      "title": "One Piece Card Game - EB-06 Extra Booster Display (24 Packs) Englisch ab 29.01.2027",
+      "url": "https://card-collector.net/products/one-piece-card-game-eb-06-extra-booster-display-24-packs-englisch-ab-29-01-2026"
+    },
+    "Card Collector|https://card-collector.net/products/one-piece-card-game-op-18-booster-display-24-packs-englisch-ab-20-11-2026": {
+      "available": false,
+      "game": "One Piece",
+      "price": "120.00 €",
+      "shop": "Card Collector",
+      "title": "One Piece Card Game - OP-18 Booster Display (24 Packs) Englisch ab 20.11.2026",
+      "url": "https://card-collector.net/products/one-piece-card-game-op-18-booster-display-24-packs-englisch-ab-20-11-2026"
+    },
+    "Card Collector|https://card-collector.net/products/one-piece-card-game-op-19-booster-display-24-packs-englisch-ab-05-03-2027": {
+      "available": false,
+      "game": "One Piece",
+      "price": "120.00 €",
+      "shop": "Card Collector",
+      "title": "One Piece Card Game - OP-19 Booster Display (24 Packs) Englisch ab 05.03.2027",
+      "url": "https://card-collector.net/products/one-piece-card-game-op-19-booster-display-24-packs-englisch-ab-05-03-2027"
+    },
+    "Card Collector|https://card-collector.net/products/one-piece-card-game-op-20-booster-display-englisch-ab-04-06-2027": {
+      "available": false,
+      "game": "One Piece",
+      "price": "120.00 €",
+      "shop": "Card Collector",
+      "title": "One Piece Card Game - OP-20 Booster Display Englisch ab 04.06.2027",
+      "url": "https://card-collector.net/products/one-piece-card-game-op-20-booster-display-englisch-ab-04-06-2027"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragon-ball-super-card-game-fusion-world-manga-booster-01-booster-display-sb01-englisch": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "129.00 €",
+      "shop": "Comic Planet",
+      "title": "Dragon Ball Super Card Game Fusion World - Manga Booster 01 Booster Display SB01 - englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragon-ball-super-card-game-fusion-world-manga-booster-01-booster-display-sb01-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragon-ball-super-card-game-fusion-world-manga-booster-02-booster-display-sb02-englisch": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "129.99 €",
+      "shop": "Comic Planet",
+      "title": "Dragon Ball Super Card Game Fusion World - Manga Booster 02 Booster Display SB02 - englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragon-ball-super-card-game-fusion-world-manga-booster-02-booster-display-sb02-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-fb10-cross-force-booster-display-englisch": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "89.99 €",
+      "shop": "Comic Planet",
+      "title": "Dragonball Super Card Game - Fusion World FB10 Cross Force Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-fb10-cross-force-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-fb11-booster-display-englisch": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "94.99 €",
+      "shop": "Comic Planet",
+      "title": "Dragonball Super Card Game - Fusion World FB11 Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-fb11-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-fb12-booster-display-englisch": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "94.99 €",
+      "shop": "Comic Planet",
+      "title": "Dragonball Super Card Game - Fusion World FB12 Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-fb12-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-st01-story-booster-display-englisch": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "399.99 €",
+      "shop": "Comic Planet",
+      "title": "Dragonball Super Card Game - Fusion World ST01 Story Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-st01-story-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-st03-story-booster-display-englisch": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "99.99 €",
+      "shop": "Comic Planet",
+      "title": "Dragonball Super Card Game - Fusion World ST03 Story Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/dragon-ball/display-db/dragonball-super-card-game-fusion-world-st03-story-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-eb05-booster-display-englisch": {
+      "available": false,
+      "game": "One Piece",
+      "price": "119.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG EB05 Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-eb05-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-eb06-booster-display-englisch": {
+      "available": false,
+      "game": "One Piece",
+      "price": "114.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG EB06 Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-eb06-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-heroines-edition-eb-03-extra-booster-display-englisch": {
+      "available": true,
+      "game": "One Piece",
+      "price": "349.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG Heroines Edition EB-03 Extra Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-heroines-edition-eb-03-extra-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op15-eb04-adventure-on-kami-s-island-booster-display-englisch": {
+      "available": true,
+      "game": "One Piece",
+      "price": "249.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG OP15 EB04 Adventure on Kami's Island Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op15-eb04-adventure-on-kami-s-island-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op16-the-time-of-battle-booster-display-englisch": {
+      "available": true,
+      "game": "One Piece",
+      "price": "199.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG OP16 The Time of Battle Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op16-the-time-of-battle-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op17-the-world-s-strongest-warriors-booster-display-englisch": {
+      "available": true,
+      "game": "One Piece",
+      "price": "299.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG OP17 The World’s Strongest Warriors Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op17-the-world-s-strongest-warriors-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op18-booster-display-englisch": {
+      "available": false,
+      "game": "One Piece",
+      "price": "114.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG OP18 Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op18-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op19-booster-display-englisch": {
+      "available": false,
+      "game": "One Piece",
+      "price": "119.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG OP19 Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op19-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op20-booster-display-englisch": {
+      "available": false,
+      "game": "One Piece",
+      "price": "119.99 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG OP20 Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-op20-booster-display-englisch"
+    },
+    "Comic Planet|https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-peb-01-premium-extra-booster-display-englisch": {
+      "available": false,
+      "game": "One Piece",
+      "price": "139.00 €",
+      "shop": "Comic Planet",
+      "title": "One Piece CG PEB-01 Premium Extra Booster Display englisch",
+      "url": "https://www.comicplanet.de/sammelkarten/one-piece/displays-op/one-piece-cg-peb-01-premium-extra-booster-display-englisch"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/dragon-ball-super-card-game-fusion-world-fb12-display-eng-vorbestellung-release-11-12-2026": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "149.99 €",
+      "shop": "FantasiaCards",
+      "title": "Dragon Ball Super Card Game - Fusion World - FB12 - Display - [ENG] (Vorbestellung - Release: 11.12.2026)",
+      "url": "https://fantasiacards.de/products/dragon-ball-super-card-game-fusion-world-fb12-display-eng-vorbestellung-release-11-12-2026"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/dragon-ball-super-card-game-fusion-world-st01-story-booster-display-01-eng-1": {
+      "available": true,
+      "game": "Dragon Ball",
+      "price": "699.99 €",
+      "shop": "FantasiaCards",
+      "title": "Dragon Ball Super Card Game - Fusion World - ST01 - Story Booster Display 01 [ENG]",
+      "url": "https://fantasiacards.de/products/dragon-ball-super-card-game-fusion-world-st01-story-booster-display-01-eng-1"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-eb03-heroines-edition-display-eng": {
+      "available": true,
+      "game": "One Piece",
+      "price": "359.99 €",
+      "shop": "FantasiaCards",
+      "title": "One Piece Card Game - EB03 - Heroines Edition - Display [ENG]",
+      "url": "https://fantasiacards.de/products/one-piece-card-game-eb03-heroines-edition-display-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-eb05-heroines-edition-vol-2-display-eng": {
+      "available": false,
+      "game": "One Piece",
+      "price": "299.99 €",
+      "shop": "FantasiaCards",
+      "title": "One Piece Card Game - EB05 - Heroines Edition Vol.2 - Display [ENG]",
+      "url": "https://fantasiacards.de/products/one-piece-card-game-eb05-heroines-edition-vol-2-display-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-op15-adventure-on-kamis-island-display-eng": {
+      "available": true,
+      "game": "One Piece",
+      "price": "299.99 €",
+      "shop": "FantasiaCards",
+      "title": "One Piece Card Game - OP15 - Adventure on Kami's Island - Display [ENG]",
+      "url": "https://fantasiacards.de/products/one-piece-card-game-op15-adventure-on-kamis-island-display-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-op15-display-eng-vorbestellung-release-12-06-26": {
+      "available": false,
+      "game": "One Piece",
+      "price": "229.99 €",
+      "shop": "FantasiaCards",
+      "title": "One Piece Card Game - OP16 - The Time of Battle - Display [ENG]",
+      "url": "https://fantasiacards.de/products/one-piece-card-game-op15-display-eng-vorbestellung-release-12-06-26"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-op17-the-worlds-strongest-warriors-display-eng": {
+      "available": false,
+      "game": "One Piece",
+      "price": "329.99 €",
+      "shop": "FantasiaCards",
+      "title": "One Piece Card Game - OP17 - The Worlds Strongest Warriors - Display [ENG]",
+      "url": "https://fantasiacards.de/products/one-piece-card-game-op17-the-worlds-strongest-warriors-display-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-prb02-display-eng": {
+      "available": true,
+      "game": "One Piece",
+      "price": "379.99 €",
+      "shop": "FantasiaCards",
+      "title": "One Piece Card Game - PRB02 - Display [ENG]",
+      "url": "https://fantasiacards.de/products/one-piece-card-game-prb02-display-eng"
+    },
+    "GoodGameGuys|https://www.goodgameguys.de/dragon-ball-super-fusion-world-fb11-booster-display-englisch.html": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "129,99 €",
+      "shop": "GoodGameGuys",
+      "title": "Dragonball Super Card Game: Crisis-Awakened Saiyan Power! Booster Display [Fusion World] FB-11",
+      "url": "https://www.goodgameguys.de/dragon-ball-super-fusion-world-fb11-booster-display-englisch.html"
+    },
+    "GoodGameGuys|https://www.goodgameguys.de/dragon-ball-super-fusion-world-fb12-reach-the-god-booster-display-englisch.html": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "129,99 €",
+      "shop": "GoodGameGuys",
+      "title": "Dragonball Super Card Game: Reach the God Booster Display [Fusion World] - FB-12",
+      "url": "https://www.goodgameguys.de/dragon-ball-super-fusion-world-fb12-reach-the-god-booster-display-englisch.html"
+    },
+    "GoodGameGuys|https://www.goodgameguys.de/dragon-ball-super-fusion-world-fb13-booster-display-englisch.html": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "129,99 €",
+      "shop": "GoodGameGuys",
+      "title": "Dragonball Super Card Game: Booster Display [Fusion World] - FB-13",
+      "url": "https://www.goodgameguys.de/dragon-ball-super-fusion-world-fb13-booster-display-englisch.html"
+    },
+    "GoodGameGuys|https://www.goodgameguys.de/dragon-ball-super-fusion-world-story-booster-vol-2-st02-display-englisch.html": {
+      "available": false,
+      "game": "Dragon Ball",
+      "price": "129,99 €",
+      "shop": "GoodGameGuys",
+      "title": "Dragonball Super Card Game: Story Vol. 2 Booster Display [Fusion World] - ST-02",
+      "url": "https://www.goodgameguys.de/dragon-ball-super-fusion-world-story-booster-vol-2-st02-display-englisch.html"
+    },
+    "GoodGameGuys|https://www.goodgameguys.de/one-piece-card-game-heroines-edition-eb03-booster-box-englisch.html": {
+      "available": false,
+      "game": "One Piece",
+      "price": "499,99 €",
+      "shop": "GoodGameGuys",
+      "title": "Heroines Edition Box - EB03-04 Booster Display",
+      "url": "https://www.goodgameguys.de/one-piece-card-game-heroines-edition-eb03-booster-box-englisch.html"
+    },
+    "GoodGameGuys|https://www.goodgameguys.de/one-piece-card-game-op-16-the-time-of-battle-booster-box-englisch.html": {
+      "available": false,
+      "game": "One Piece",
+      "price": "199,99 €",
+      "shop": "GoodGameGuys",
+      "title": "The Time of Battle - OP-16 Booster Display",
+      "url": "https://www.goodgameguys.de/one-piece-card-game-op-16-the-time-of-battle-booster-box-englisch.html"
+    },
+    "GoodGameGuys|https://www.goodgameguys.de/one-piece-card-game-op-17-the-worlds-strongest-warriors-booster-box-englisch.html": {
+      "available": false,
+      "game": "One Piece",
+      "price": "299,99 €",
+      "shop": "GoodGameGuys",
+      "title": "The World's Strongest Warriors - OP17 Booster Display",
+      "url": "https://www.goodgameguys.de/one-piece-card-game-op-17-the-worlds-strongest-warriors-booster-box-englisch.html"
+    },
+    "GoodGameGuys|https://www.goodgameguys.de/one-piece-card-game-prb-01-the-best-booster-box-englisch.html": {
+      "available": true,
+      "game": "One Piece",
+      "price": "999,99 €",
+      "shop": "GoodGameGuys",
+      "title": "The Best - PRB-01 Booster Display",
+      "url": "https://www.goodgameguys.de/one-piece-card-game-prb-01-the-best-booster-box-englisch.html"
+    }
+  },
+  "known_shops": [
+    "Card Collector",
+    "Comic Planet",
+    "FantasiaCards",
+    "GoodGameGuys"
+  ],
+  "series_max": {
+    "Dragon Ball|FB": 13,
+    "Dragon Ball|SB": 2,
+    "Dragon Ball|ST": 3,
+    "One Piece|EB": 6,
+    "One Piece|OP": 20,
+    "One Piece|PEB": 1,
+    "One Piece|PRB": 2
+  },
+  "status_week": "2026-W45",
+  "version": 2
+}
