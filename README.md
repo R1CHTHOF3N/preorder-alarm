@@ -25,8 +25,8 @@ irgendein Shop listet (auch japanisch, weil die früher erscheinen), und sucht i
 Taucht z. B. FB14 auf, wird ab dann auch nach FB15 und FB16 gesucht. Eine ganz neue Serie
 (neues Kürzel) müsste man in `check.py` unter `SERIES` eintragen.
 
-Meldungen kommen als farbige Karten ohne `@everyone`. Damit das Handy trotzdem klingelt, den Server
-in Discord auf **Alle Nachrichten** stellen.
+Meldungen kommen als farbige Karten und pingen dich direkt (`PING_USER_ID` in `check.py`) –
+außer dem 💓 Wochen-Check.
 
 | Nachricht | Bedeutung |
 |---|---|

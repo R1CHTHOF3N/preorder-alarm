@@ -54,13 +54,17 @@ EXCLUDE_WORDS = [
 ]
 ENGLISH_MARKERS = ["englisch", "english", "[eng]", "[en]", "(eng)", "(en)"]
 
+# Discord-Benutzer, der bei jeder Meldung angepingt wird (außer beim Wochen-Check).
+# Discord: Einstellungen -> Erweitert -> Entwicklermodus, dann Rechtsklick aufs Profil -> "ID kopieren".
+PING_USER_ID = "595970404363927564"
+
 # Ein Shop gilt erst nach so vielen Fehlversuchen hintereinander als kaputt (bei 10-Min-Takt ≈ 30 Min).
 # Einzelne Aussetzer (Timeout, kurz überlastet) lösen so keinen Fehlalarm aus.
 ERROR_ALERT_AFTER = 3
 # Danach wird alle so viele Fehlversuche erinnert (≈ 12 Stunden), solange es kaputt bleibt.
 ERROR_REMIND_EVERY = 72
 
-STATE_VERSION = 5  # erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
+STATE_VERSION = 6  # erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
 HEADERS = {"User-Agent": "Mozilla/5.0 (preorder-alarm; privater Benachrichtigungs-Bot)"}
 
@@ -369,8 +373,11 @@ COLOR = {
 GAME_ICON = {"Dragon Ball": "🐉", "One Piece": "🏴‍☠️"}
 
 
-def post_discord(webhook, embeds):
-    body = json.dumps({"embeds": embeds, "allowed_mentions": {"parse": []}}).encode()
+def post_discord(webhook, embeds, ping=False):
+    payload = {"embeds": embeds, "allowed_mentions": {"parse": [], "users": [PING_USER_ID] if ping else []}}
+    if ping:
+        payload["content"] = f"<@{PING_USER_ID}>"
+    body = json.dumps(payload).encode()
     for attempt in range(1, 6):
         req = urllib.request.Request(
             webhook, data=body, headers={**HEADERS, "Content-Type": "application/json"}
@@ -405,7 +412,7 @@ def as_text(embed):
     return "\n".join(p for p in parts if p)
 
 
-def send_discord(embeds):
+def send_discord(embeds, ping=True):
     webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
     print("\n\n".join(as_text(e) for e in embeds))
     if not webhook:
@@ -419,13 +426,14 @@ def send_discord(embeds):
     for embed in embeds:
         s = embed_size(embed)
         if batch and (size + s > 5500 or len(batch) == 10):
-            post_discord(webhook, batch)
+            post_discord(webhook, batch, ping)
+            ping = False  # ein Ping pro Lauf reicht
             time.sleep(1)
             batch, size = [], 0
         batch.append(embed)
         size += s
     if batch:
-        post_discord(webhook, batch)
+        post_discord(webhook, batch, ping)
 
 
 def main_code(item):
@@ -441,10 +449,10 @@ def main_code(item):
 
 
 def sort_key(code):
-    """Serien in der Reihenfolge von SERIES, darin die neuesten Sets zuerst."""
+    """Serien in der Reihenfolge von SERIES, darin aufsteigend (FB11, FB12, FB13 …)."""
     prefix = re.match(r"[A-Z]+", code).group(0)
     order = [s["prefix"] for s in SERIES]
-    return (order.index(prefix) if prefix in order else 99, -code_number(code))
+    return (order.index(prefix) if prefix in order else 99, code_number(code))
 
 
 def price_de(price):
@@ -610,10 +618,11 @@ def main():
 
     if first_run:
         messages = overview(items, [n for n, c in errors.items() if c])
+    quiet = []
     if not first_run and old.get("status_week") != week:
-        # Einmal pro Woche ein Lebenszeichen: Bleibt es aus, läuft der Alarm nicht mehr.
+        # Einmal pro Woche ein Lebenszeichen (ohne Ping): Bleibt es aus, läuft der Alarm nicht mehr.
         broken = [n for n, c in errors.items() if c >= ERROR_ALERT_AFTER]
-        messages.append(notice(
+        quiet.append(notice(
             "info", "💓 Wochen-Check",
             f"Preorder-Alarm läuft – {len(items)} Displays in {len(SHOPS)} Shops überwacht.\n"
             + (f"⚠️ Gestört: {', '.join(broken)}" if broken else "✅ Alle Shops ok."),
@@ -621,6 +630,8 @@ def main():
 
     if messages:
         send_discord(messages)
+    if quiet:
+        send_discord(quiet, ping=False)
 
     save_state({
         "version": STATE_VERSION,
