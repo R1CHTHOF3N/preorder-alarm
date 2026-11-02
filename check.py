@@ -14,6 +14,7 @@ import os
 import re
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from html import unescape
@@ -51,8 +52,14 @@ EXCLUDE_WORDS = [
 ]
 ENGLISH_MARKERS = ["englisch", "english", "[eng]", "[en]", "(eng)", "(en)"]
 
-# Nach so vielen Fehlversuchen hintereinander kommt eine Warnung (bei 10-Min-Takt ≈ 1 Stunde).
-ERROR_ALERT_AFTER = 6
+# Jede Discord-Nachricht pingt alle auf dem Server (auf dem eigenen Server also dich).
+PING = "@everyone"
+
+# Ein Shop gilt erst nach so vielen Fehlversuchen hintereinander als kaputt (bei 10-Min-Takt ≈ 30 Min).
+# Einzelne Aussetzer (Timeout, kurz überlastet) lösen so keinen Fehlalarm aus.
+ERROR_ALERT_AFTER = 3
+# Danach wird alle so viele Fehlversuche erinnert (≈ 12 Stunden), solange es kaputt bleibt.
+ERROR_REMIND_EVERY = 72
 
 STATE_VERSION = 2  # erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
@@ -62,14 +69,28 @@ PREFIXES = sorted({s["prefix"] for s in SERIES}, key=len, reverse=True)
 CODE_RE = re.compile(rf"\b({'|'.join(PREFIXES)})[\s-]?(\d{{1,2}})\b")
 
 
+class LayoutError(Exception):
+    """Die Seite sieht anders aus als erwartet – lieber Alarm als falsche Meldungen."""
+
+
 # ---------------------------------------------------------------------------
 # Erkennung
 # ---------------------------------------------------------------------------
 
-def fetch(url):
-    req = urllib.request.Request(url, headers=HEADERS)
-    with urllib.request.urlopen(req, timeout=25) as resp:
-        return resp.read().decode("utf-8", "replace")
+def fetch(url, attempts=3):
+    """Lädt eine Seite; bei Timeouts, 429 und Serverfehlern wird zweimal neu versucht."""
+    for attempt in range(1, attempts + 1):
+        try:
+            req = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                return resp.read().decode("utf-8", "replace")
+        except urllib.error.HTTPError as e:
+            if e.code != 429 and e.code < 500 or attempt == attempts:
+                raise
+        except (urllib.error.URLError, TimeoutError, ConnectionError):
+            if attempt == attempts:
+                raise
+        time.sleep(5 * attempt)
 
 
 def describe(title, url=""):
@@ -102,6 +123,7 @@ def code_number(code):
 # ---------------------------------------------------------------------------
 # Shops: jede Funktion bekommt die gesuchten Codes und liefert Treffer
 #   {"title", "url", "price", "available"}
+# Kann ein Shop nicht sicher sagen, ob etwas bestellbar ist, wirft er LayoutError.
 # ---------------------------------------------------------------------------
 
 def shopify(base):
@@ -111,13 +133,22 @@ def shopify(base):
             url = f"{base}/search/suggest.json?" + urllib.parse.urlencode(
                 {"q": code, "resources[type]": "product", "resources[limit]": 10}
             )
-            data = json.loads(fetch(url))
-            for p in data["resources"]["results"]["products"]:
+            try:
+                products = json.loads(fetch(url))["resources"]["results"]["products"]
+            except (ValueError, KeyError, TypeError) as e:
+                raise LayoutError(f"Suche liefert kein gültiges JSON mehr ({e})")
+            for p in products:
+                if not isinstance(p.get("available"), bool):
+                    raise LayoutError("Verfügbarkeit fehlt in der Suche")
+                try:
+                    price = f"{float(p['price']):.2f} €"
+                except (KeyError, TypeError, ValueError):
+                    price = "?"
                 yield {
                     "title": p["title"],
                     "url": base + p["url"].split("?")[0],
-                    "price": f"{float(p['price']):.2f} €",
-                    "available": bool(p["available"]),
+                    "price": price,
+                    "available": p["available"],
                 }
             time.sleep(0.5)
     return scan
@@ -143,12 +174,16 @@ def comicplanet(codes):
             start = page.find("product-detail-buy")
             end = page.find("product-detail-tabs", start)
             buy_area = page[start:end] if start != -1 and end != -1 else ""
+            can_buy = "line-item/add" in buy_area
+            can_notify = "stock-notification" in buy_area
+            if can_buy == can_notify:
+                raise LayoutError(f"Kaufbereich nicht erkennbar: {href}")
             price = re.search(r'itemprop="price"\s+content="([\d.]+)"', page)
             yield {
                 "title": title,
                 "url": href,
                 "price": f"{float(price.group(1)):.2f} €" if price else "?",
-                "available": "line-item/add" in buy_area,
+                "available": can_buy,
             }
 
 
@@ -167,6 +202,9 @@ def goodgameguys(codes):
             continue
         page = fetch(href)
         time.sleep(0.5)
+        button = re.search(r'<input[^>]*name="btn-add-to-cart"[^>]*>', page)
+        if not button:
+            raise LayoutError(f"Warenkorb-Button nicht gefunden: {href}")
         m = re.search(r"<h1[^>]*>(.*?)</h1>", page, re.S)
         title = unescape(re.sub(r"<[^>]+>|\s+", " ", m.group(1))).strip() if m else href
         price = re.search(r'current-price-container">\s*(?:<[^>]+>\s*)*([\d.]+,\d{2})', page)
@@ -174,7 +212,7 @@ def goodgameguys(codes):
             "title": title,
             "url": href,
             "price": price.group(1) + " €" if price else "?",
-            "available": re.search(r"leider vergriffen", page, re.I) is None,
+            "available": not re.search(r"\bdisabled\b|btn-inactive", button.group(0)),
         }
 
 
@@ -205,35 +243,73 @@ def load_state():
             state = json.load(f)
     except FileNotFoundError:
         return None
+    except ValueError:
+        print("state.json ist beschädigt, starte neu.", file=sys.stderr)
+        return None
     return state if state.get("version") == STATE_VERSION else None
 
 
 def save_state(state):
-    with open(STATE_FILE, "w", encoding="utf-8") as f:
+    tmp = STATE_FILE + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(state, f, ensure_ascii=False, indent=2, sort_keys=True)
         f.write("\n")
+    os.replace(tmp, STATE_FILE)  # nie eine halb geschriebene Datei hinterlassen
+
+
+def post_discord(webhook, content):
+    body = json.dumps({
+        "content": content,
+        "flags": 4,  # keine Link-Vorschau
+        "allowed_mentions": {"parse": ["everyone"]},
+    }).encode()
+    for attempt in range(1, 6):
+        req = urllib.request.Request(
+            webhook, data=body, headers={**HEADERS, "Content-Type": "application/json"}
+        )
+        try:
+            urllib.request.urlopen(req, timeout=20).close()
+            return
+        except urllib.error.HTTPError as e:
+            if e.code != 429 and e.code < 500 or attempt == 5:
+                raise
+            try:
+                wait = float(json.loads(e.read()).get("retry_after", 2))
+            except ValueError:
+                wait = 2
+            time.sleep(min(wait, 30) + 0.5)
+        except (urllib.error.URLError, TimeoutError, ConnectionError):
+            if attempt == 5:
+                raise
+            time.sleep(3 * attempt)
 
 
 def send_discord(messages):
     webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
-    print("\n".join(messages))
+    print("\n\n".join(messages))
     if not webhook:
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            # Auf GitHub ohne Webhook würde der Alarm stumm laufen -> lieber Lauf fehlschlagen lassen.
+            sys.exit("DISCORD_WEBHOOK_URL fehlt! Secret in GitHub anlegen (siehe README).")
         print("(Testmodus: DISCORD_WEBHOOK_URL nicht gesetzt, nichts gesendet)")
         return
-    # Discord erlaubt max. 2000 Zeichen pro Nachricht.
-    chunks, current = [], ""
-    for line in "\n".join(messages).split("\n"):
-        if len(current) + len(line) + 1 > 1900:
+    # Discord erlaubt max. 2000 Zeichen pro Nachricht. Titel und Link bleiben zusammen,
+    # gepingt wird einmal pro Meldung (nicht pro Teilstück).
+    entries = []
+    for line in "\n\n".join(messages).split("\n"):
+        if line.startswith("<http") and entries:
+            entries[-1] += "\n" + line
+        else:
+            entries.append(line[:1800])
+    chunks, current = [], PING + "\n"
+    for entry in entries:
+        if len(current) + len(entry) + 1 > 1900:
             chunks.append(current)
             current = ""
-        current += line + "\n"
+        current += entry + "\n"
     chunks.append(current)
     for chunk in chunks:
-        body = json.dumps({"content": chunk, "flags": 4}).encode()  # flags 4 = keine Link-Vorschau
-        req = urllib.request.Request(
-            webhook, data=body, headers={**HEADERS, "Content-Type": "application/json"}
-        )
-        urllib.request.urlopen(req, timeout=20).close()
+        post_discord(webhook, chunk)
         time.sleep(1)
 
 
@@ -244,10 +320,13 @@ def fmt(item):
 def main():
     old = load_state()
     first_run = old is None
-    old = old or {"items": {}, "errors": {}, "series_max": {}}
-    items = dict(old["items"])
+    old = old or {}
+    items = dict(old.get("items", {}))
     errors = dict(old.get("errors", {}))
     series_max = dict(old.get("series_max", {}))
+    # Shops, die schon mal erfolgreich geprüft wurden. Ein neuer (oder beim ersten Lauf
+    # ausgefallener) Shop wird beim ersten Erfolg still übernommen statt alles als 🆕 zu melden.
+    known_shops = set(old.get("known_shops", []))
     codes = codes_to_search(series_max)
     print("Suche nach:", ", ".join(codes))
     messages = []
@@ -255,10 +334,12 @@ def main():
     for name, scan in SHOPS.items():
         try:
             found = {}
+            recognized = 0
             for item in scan(codes):
                 info = describe(item["title"], item["url"])
                 if not info:
                     continue
+                recognized += 1
                 game, item_codes, english = info
                 # Auch japanische Listungen schieben die Suche weiter (die erscheinen früher).
                 for c in item_codes:
@@ -267,19 +348,36 @@ def main():
                 if english and set(item_codes) & set(codes):
                     item.update(shop=name, game=game)
                     found[f"{name}|{item['url']}"] = item
+            if recognized == 0:
+                # Jeder dieser Shops führt Displays – null Treffer heißt fast sicher: Seite umgebaut.
+                raise LayoutError("keine einzige Display-Seite erkannt")
         except Exception as e:  # ein kaputter Shop soll die anderen nicht aufhalten
-            print(f"[{name}] Fehler: {e}", file=sys.stderr)
-            errors[name] = errors.get(name, 0) + 1
-            if errors[name] == ERROR_ALERT_AFTER:
-                messages.append(f"⚠️ {name} lässt sich seit {ERROR_ALERT_AFTER} Versuchen nicht abfragen ({e}).")
+            print(f"[{name}] Fehler: {type(e).__name__}: {e}", file=sys.stderr)
+            count = errors.get(name, 0) + 1
+            errors[name] = count
+            if count == ERROR_ALERT_AFTER or (
+                count > ERROR_ALERT_AFTER and (count - ERROR_ALERT_AFTER) % ERROR_REMIND_EVERY == 0
+            ):
+                messages.append(
+                    f"⚠️ **{name}** lässt sich seit {count} Versuchen nicht prüfen – "
+                    f"dort werden Preorders gerade NICHT erkannt!\n`{type(e).__name__}: {str(e)[:300]}`"
+                )
             continue
         if errors.get(name, 0) >= ERROR_ALERT_AFTER:
-            messages.append(f"✅ {name} funktioniert wieder.")
+            messages.append(f"✅ **{name}** wird wieder geprüft.")
         errors[name] = 0
+        silent = first_run or name not in known_shops
+        if silent and not first_run:
+            available = [i for i in found.values() if i["available"]]
+            messages.append(
+                f"ℹ️ **{name}** wird ab jetzt überwacht ({len(found)} Displays)."
+                + "".join("\n🟢 " + fmt(i) for i in available)
+            )
+        known_shops.add(name)
 
         for key, item in found.items():
             before = items.get(key)
-            if not first_run:
+            if not silent:
                 if before is None and item["available"]:
                     messages.append("🟢 **JETZT BESTELLBAR (neu)**\n" + fmt(item))
                 elif before is None:
@@ -287,6 +385,9 @@ def main():
                 elif item["available"] and not before["available"]:
                     messages.append("🟢 **WIEDER BESTELLBAR**\n" + fmt(item))
             items[key] = item
+
+    today = datetime.date.today()
+    week = f"{today.isocalendar()[0]}-W{today.isocalendar()[1]:02d}"
 
     if first_run:
         lines = ["🤖 Preorder-Alarm ist aktiv (nur englische Displays). Aktueller Stand:"]
@@ -300,7 +401,17 @@ def main():
                 lines.append(("🟢 " if item["available"] else "🔴 ") + fmt(item))
             if not game_items:
                 lines.append("(noch nichts gefunden)")
+        broken = [n for n, c in errors.items() if c]
+        if broken:
+            lines.append(f"\n⚠️ Diesmal nicht erreichbar: {', '.join(broken)}")
         messages = ["\n".join(lines)]
+    elif old.get("status_week") != week:
+        # Einmal pro Woche ein Lebenszeichen: Bleibt es aus, läuft der Alarm nicht mehr.
+        broken = [n for n, c in errors.items() if c >= ERROR_ALERT_AFTER]
+        messages.append(
+            f"💓 Wochen-Check: Preorder-Alarm läuft, {len(items)} Displays in {len(SHOPS)} Shops überwacht."
+            + (f" Gestört: {', '.join(broken)}" if broken else " Alle Shops ok.")
+        )
 
     if messages:
         send_discord(messages)
@@ -310,8 +421,10 @@ def main():
         "items": items,
         "errors": errors,
         "series_max": series_max,
+        "known_shops": sorted(known_shops),
+        "status_week": week,
         # Einmal täglich ändert sich die Datei, damit GitHub das Repo als aktiv ansieht.
-        "heartbeat": datetime.date.today().isoformat(),
+        "heartbeat": today.isoformat(),
     })
 
 

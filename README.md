@@ -17,11 +17,21 @@ irgendein Shop listet (auch japanisch, weil die früher erscheinen), und sucht i
 Taucht z. B. FB14 auf, wird ab dann auch nach FB15 und FB16 gesucht. Eine ganz neue Serie
 (neues Kürzel) müsste man in `check.py` unter `SERIES` eintragen.
 
+Jede Meldung pingt mit `@everyone` (auf deinem eigenen Server also dich).
+
 | Nachricht | Bedeutung |
 |---|---|
 | 🟢 JETZT BESTELLBAR / WIEDER BESTELLBAR | Kaufen-Button ist da → sofort zuschlagen |
 | 🆕 Neu gelistet, noch nicht bestellbar | Seite existiert, aber nur „Benachrichtigen“ |
-| ⚠️ Shop lässt sich nicht abfragen | Shop hat seit ~1 Stunde Probleme oder blockt |
+| ⚠️ Shop lässt sich nicht prüfen | 3× hintereinander (~30 Min.) Fehler oder Shop-Seite umgebaut; Erinnerung alle ~12 Std. |
+| ✅ Shop wird wieder geprüft | Entwarnung |
+| ❌ Preorder-Alarm ist abgestürzt | Der ganze Lauf ist fehlgeschlagen (nur beim ersten Mal gemeldet) |
+| 💓 Wochen-Check | Lebenszeichen einmal pro Woche. **Bleibt es aus, läuft der Alarm nicht mehr** → unter Actions nachsehen |
+
+**Absicherungen:** Bei Aussetzern wird automatisch neu versucht. Kann das Skript auf einer Shopseite
+den Kaufen-/Benachrichtigen-Bereich nicht eindeutig erkennen (Shop umgebaut), meldet es ⚠️ statt
+falsch „bestellbar“ oder „nicht bestellbar“ zu melden. Fehlt das Webhook-Secret, schlägt der Lauf
+fehl (GitHub schickt dir dann eine E-Mail), statt stumm zu laufen.
 
 ## Einrichtung (einmalig, ca. 10 Minuten)
 

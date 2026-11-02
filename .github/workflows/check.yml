@@ -8,7 +8,8 @@ on:
   workflow_dispatch: # erlaubt den Start per Knopfdruck unter "Actions"
 
 permissions:
-  contents: write # nur um state.json zurückzuspeichern
+  contents: write # um state.json zurückzuspeichern
+  actions: read # um zu sehen, ob der vorige Lauf fehlgeschlagen ist
 
 concurrency:
   group: preorder-check
@@ -17,14 +18,17 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
+    env:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      GH_TOKEN: ${{ github.token }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Shops prüfen
+        timeout-minutes: 8 # hängt etwas, schlägt der Schritt fehl und der Alarm unten greift
         run: python3 check.py
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
       - name: Stand speichern
         run: |
@@ -32,3 +36,22 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add state.json
           git diff --cached --quiet || (git commit -m "Stand aktualisiert" && git push)
+
+      # Discord-Meldung bei Absturz – nur beim ersten Fehlschlag, damit es nicht alle 10 Min. pingt.
+      - name: Absturz melden
+        if: failure()
+        run: |
+          prev=$(gh run list -R "$GITHUB_REPOSITORY" --workflow check.yml --status completed --limit 1 --json conclusion --jq '.[0].conclusion' || echo unknown)
+          if [ "$prev" = "failure" ]; then echo "Vorheriger Lauf schon fehlgeschlagen, bereits gemeldet."; exit 0; fi
+          jq -n --arg c "@everyone ❌ **Preorder-Alarm ist abgestürzt** – solange werden KEINE Preorders erkannt! Details: <$RUN_URL>" \
+            '{content: $c, allowed_mentions: {parse: ["everyone"]}}' |
+            curl -sSf --retry 3 -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK_URL"
+
+      - name: Entwarnung nach Absturz
+        if: success()
+        run: |
+          prev=$(gh run list -R "$GITHUB_REPOSITORY" --workflow check.yml --status completed --limit 1 --json conclusion --jq '.[0].conclusion' || echo unknown)
+          if [ "$prev" != "failure" ]; then exit 0; fi
+          jq -n --arg c "@everyone ✅ Preorder-Alarm läuft wieder." \
+            '{content: $c, allowed_mentions: {parse: ["everyone"]}}' |
+            curl -sSf --retry 3 -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK_URL" || true
