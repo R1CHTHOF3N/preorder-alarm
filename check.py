@@ -61,7 +61,7 @@ ERROR_ALERT_AFTER = 3
 # Danach wird alle so viele Fehlversuche erinnert (≈ 12 Stunden), solange es kaputt bleibt.
 ERROR_REMIND_EVERY = 72
 
-STATE_VERSION = 2  # erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
+STATE_VERSION = 3 # erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
 HEADERS = {"User-Agent": "Mozilla/5.0 (preorder-alarm; privater Benachrichtigungs-Bot)"}
 
@@ -313,8 +313,54 @@ def send_discord(messages, ping=True):
         time.sleep(1)
 
 
+def main_code(item):
+    """Set-Code, unter dem ein Display einsortiert wird (z. B. 'OP15 EB04 ...' -> EB04)."""
+    info = describe(item["title"], item["url"])
+    if not info:
+        return "?"
+    # Codes aus dem Titel haben Vorrang; im Link vertippen sich Shops manchmal.
+    in_title = {f"{p}{int(n):02d}" for p, n in CODE_RE.findall(item["title"].upper().replace("-", " "))}
+    codes = sorted(set(info[1]) & in_title) or info[1]
+    special = [c for c in codes if not c.startswith(("OP", "FB"))]
+    return (special or codes)[-1]
+
+
+def sort_key(code):
+    prefix = re.match(r"[A-Z]+", code).group(0)
+    order = [s["prefix"] for s in SERIES]
+    return (order.index(prefix) if prefix in order else 99, code_number(code))
+
+
+def price_de(price):
+    return re.sub(r"^(\d+)\.(\d{2})", r"\1,\2", price)
+
+
+def shop_link(item):
+    # <...> um den Link verhindert die große Vorschau in Discord
+    return f"[{item['shop']}](<{item['url']}>) {price_de(item['price'])}"
+
+
 def fmt(item):
-    return f"**{item['title']}** – {item['price']} – {item['shop']}\n<{item['url']}>"
+    return f"**{main_code(item)}** {item['game']} – {shop_link(item)}"
+
+
+def overview(items):
+    lines = ["🤖 **Preorder-Alarm aktiv** – nur englische Displays  ·  🟢 bestellbar  🔴 nicht bestellbar"]
+    for game in GAMES:
+        by_code = {}
+        for item in items.values():
+            if item.get("game") == game:
+                by_code.setdefault(main_code(item), []).append(item)
+        lines.append(f"\n__**{game}**__")
+        for code in sorted(by_code, key=sort_key):
+            shops = sorted(by_code[code], key=lambda i: (not i["available"], i["shop"]))
+            lines.append(f"**{code}**  " + "  ·  ".join(
+                ("🟢 " if i["available"] else "🔴 ") + shop_link(i) for i in shops
+            ))
+        if not by_code:
+            lines.append("(noch nichts gefunden)")
+    lines.append(f"\n🏪 Shops: {', '.join(SHOPS)}")
+    return "\n".join(lines)
 
 
 def main():
@@ -379,32 +425,22 @@ def main():
             before = items.get(key)
             if not silent:
                 if before is None and item["available"]:
-                    messages.append("🟢 **JETZT BESTELLBAR (neu)**\n" + fmt(item))
+                    messages.append("🟢 **JETZT BESTELLBAR:** " + fmt(item))
                 elif before is None:
-                    messages.append("🆕 Neu gelistet, noch nicht bestellbar\n" + fmt(item))
+                    messages.append("🆕 Neu gelistet (noch nicht bestellbar): " + fmt(item))
                 elif item["available"] and not before["available"]:
-                    messages.append("🟢 **WIEDER BESTELLBAR**\n" + fmt(item))
+                    messages.append("🟢 **WIEDER BESTELLBAR:** " + fmt(item))
             items[key] = item
 
     today = datetime.date.today()
     week = f"{today.isocalendar()[0]}-W{today.isocalendar()[1]:02d}"
 
     if first_run:
-        lines = ["🤖 Preorder-Alarm ist aktiv (nur englische Displays). Aktueller Stand:"]
-        for game in GAMES:
-            game_items = sorted(
-                (i for i in items.values() if i.get("game") == game),
-                key=lambda i: (i["title"].lower(), i["shop"]),
-            )
-            lines.append(f"\n__**{game}**__")
-            for item in game_items:
-                lines.append(("🟢 " if item["available"] else "🔴 ") + fmt(item))
-            if not game_items:
-                lines.append("(noch nichts gefunden)")
+        text = overview(items)
         broken = [n for n, c in errors.items() if c]
         if broken:
-            lines.append(f"\n⚠️ Diesmal nicht erreichbar: {', '.join(broken)}")
-        messages = ["\n".join(lines)]
+            text += f"\n⚠️ Diesmal nicht erreichbar: {', '.join(broken)}"
+        messages = [text]
     quiet = []
     if not first_run and old.get("status_week") != week:
         # Einmal pro Woche ein Lebenszeichen (ohne Ping): Bleibt es aus, läuft der Alarm nicht mehr.
