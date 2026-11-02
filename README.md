@@ -6,7 +6,7 @@ Läuft kostenlos auf GitHub, auch wenn dein PC aus ist.
 
 **Shops (12, alle mit deutschem Impressum + USt-ID, Versand innerhalb DE ca. 4–7 €):**
 Comic Planet, Card Collector, FantasiaCards, GoodGameGuys, Card Corner, Cardcosmos, Cardlantis,
-Daesu Cards, Yonko TCG, BreakTheCase, Feenturm (verlost Displays per Raffle → 🎟️), Play-Maniac
+Daesu Cards, Yonko TCG, BreakTheCase, Feenturm (Verlosungen/Raffles werden ignoriert), Play-Maniac
 
 Nicht dabei: Games-Island, Fantasywelt, Keepseven (blocken automatische Abfragen),
 Gate to the Games (Trustpilot 2,8 ★, viele Beschwerden über Preise/Service), Shops außerhalb DE.
@@ -31,7 +31,6 @@ außer dem 💓 Wochen-Check.
 | Nachricht | Bedeutung |
 |---|---|
 | 🟢 FB13 jetzt bestellbar! / wieder bestellbar! | Kaufen-Button ist da → sofort zuschlagen |
-| 🎟️ Verlosung | Shop verlost Displays (Raffle) → auf der Produktseite teilnehmen |
 | 🆕 FB13 neu gelistet | Seite existiert, aber nur „Benachrichtigen“ |
 | ⚠️ Shop lässt sich nicht prüfen | 3× hintereinander (~30 Min.) Fehler oder Shop-Seite umgebaut; Erinnerung alle ~12 Std. |
 | ✅ Shop wird wieder geprüft | Entwarnung |

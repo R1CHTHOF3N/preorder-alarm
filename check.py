@@ -156,7 +156,7 @@ def shopify_price(value):
 
 def shopify(base, raffles=False):
     """Shopify-Shops haben öffentliche JSON-Schnittstellen inkl. Verfügbarkeit.
-    raffles=True: Shop verlost Displays (Raffle) – die sind dann nie "bestellbar", sondern 🎟️."""
+    raffles=True: Shop verlost manche Displays (Raffle) – die werden komplett ignoriert."""
     def json_get(url):
         try:
             return json.loads(fetch(url))
@@ -208,13 +208,11 @@ def shopify(base, raffles=False):
             info = describe(item["title"], item["url"])
             if not info or not info[2]:
                 continue
-            if raffles and item["available"]:
+            if raffles:
                 product = json_get(f"{base}/products/{handle}.js")
-                plans = json.dumps(product.get("selling_plan_groups", [])).lower()
-                if "raffle" in plans:
-                    item["available"] = False
-                    item["raffle"] = True
                 time.sleep(1)
+                if "raffle" in json.dumps(product.get("selling_plan_groups", [])).lower():
+                    continue  # Verlosung statt normaler Bestellung -> uninteressant
             yield item
     scan.zero_ok = True  # gültiges JSON ohne Treffer ist hier normal (Shop führt die Sets nicht)
     return scan
@@ -367,7 +365,7 @@ def save_state(state):
 # ---------------------------------------------------------------------------
 
 COLOR = {
-    "buy": 0x2ECC71, "raffle": 0xF1C40F, "new": 0x3498DB, "error": 0xE74C3C, "info": 0x95A5A6,
+    "buy": 0x2ECC71, "new": 0x3498DB, "error": 0xE74C3C, "info": 0x95A5A6,
     "Dragon Ball": 0xF39C12, "One Piece": 0xC0392B,
 }
 GAME_ICON = {"Dragon Ball": "🐉", "One Piece": "🏴‍☠️"}
@@ -465,7 +463,7 @@ def price_value(item):
 
 
 def status_icon(item):
-    return "🟢" if item["available"] else "🎟️" if item.get("raffle") else "🔴"
+    return "🟢" if item["available"] else "🔴"
 
 
 def shop_line(item):
@@ -498,7 +496,7 @@ def event(kind, headline, item, note=""):
 def overview(items, broken=()):
     embeds = [notice(
         "info", "📋 Preorder-Alarm – Übersicht",
-        "🟢 bestellbar  ·  🎟️ Verlosung  ·  🔴 noch nicht / ausverkauft\n"
+        "🟢 bestellbar  ·  🔴 noch nicht / ausverkauft\n"
         "Ändert sich etwas, kommt eine eigene Nachricht."
         + (f"\n\n⚠️ Diesmal nicht erreichbar: {', '.join(broken)}" if broken else ""),
     )]
@@ -540,7 +538,8 @@ def main():
     first_run = old is None
     FULL_SCAN = first_run
     old = old or {}
-    items = dict(old.get("items", {}))
+    # Verlosungen aus älteren Versionen wegwerfen.
+    items = {k: v for k, v in old.get("items", {}).items() if not v.get("raffle")}
     errors = dict(old.get("errors", {}))
     series_max = dict(old.get("series_max", {}))
     # Shops, die schon mal erfolgreich geprüft wurden. Ein neuer (oder beim ersten Lauf
@@ -602,10 +601,7 @@ def main():
         for key, item in found.items():
             before = items.get(key)
             if not silent:
-                if item.get("raffle") and not (before or {}).get("raffle"):
-                    messages.append(event("raffle", f"🎟️ Verlosung: {main_code(item)}", item,
-                                          "Teilnahme auf der Produktseite."))
-                elif before is None and item["available"]:
+                if before is None and item["available"]:
                     messages.append(event("buy", f"🟢 {main_code(item)} jetzt bestellbar!", item))
                 elif before is None:
                     messages.append(event("new", f"🆕 {main_code(item)} neu gelistet", item, "Noch nicht bestellbar."))
