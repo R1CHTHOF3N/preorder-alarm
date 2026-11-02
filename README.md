@@ -17,7 +17,7 @@ irgendein Shop listet (auch japanisch, weil die früher erscheinen), und sucht i
 Taucht z. B. FB14 auf, wird ab dann auch nach FB15 und FB16 gesucht. Eine ganz neue Serie
 (neues Kürzel) müsste man in `check.py` unter `SERIES` eintragen.
 
-Jede Meldung pingt mit `@everyone` (auf deinem eigenen Server also dich).
+Jede Meldung pingt mit `@everyone` (auf deinem eigenen Server also dich) – außer dem 💓 Wochen-Check.
 
 | Nachricht | Bedeutung |
 |---|---|

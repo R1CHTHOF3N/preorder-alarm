@@ -284,7 +284,7 @@ def post_discord(webhook, content):
             time.sleep(3 * attempt)
 
 
-def send_discord(messages):
+def send_discord(messages, ping=True):
     webhook = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
     print("\n\n".join(messages))
     if not webhook:
@@ -301,7 +301,7 @@ def send_discord(messages):
             entries[-1] += "\n" + line
         else:
             entries.append(line[:1800])
-    chunks, current = [], PING + "\n"
+    chunks, current = [], PING + "\n" if ping else ""
     for entry in entries:
         if len(current) + len(entry) + 1 > 1900:
             chunks.append(current)
@@ -405,16 +405,19 @@ def main():
         if broken:
             lines.append(f"\n⚠️ Diesmal nicht erreichbar: {', '.join(broken)}")
         messages = ["\n".join(lines)]
-    elif old.get("status_week") != week:
-        # Einmal pro Woche ein Lebenszeichen: Bleibt es aus, läuft der Alarm nicht mehr.
+    quiet = []
+    if not first_run and old.get("status_week") != week:
+        # Einmal pro Woche ein Lebenszeichen (ohne Ping): Bleibt es aus, läuft der Alarm nicht mehr.
         broken = [n for n, c in errors.items() if c >= ERROR_ALERT_AFTER]
-        messages.append(
+        quiet.append(
             f"💓 Wochen-Check: Preorder-Alarm läuft, {len(items)} Displays in {len(SHOPS)} Shops überwacht."
             + (f" Gestört: {', '.join(broken)}" if broken else " Alle Shops ok.")
         )
 
     if messages:
         send_discord(messages)
+    if quiet:
+        send_discord(quiet, ping=False)
 
     save_state({
         "version": STATE_VERSION,
