@@ -13,10 +13,12 @@ import json
 import os
 import re
 import sys
+import threading
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 from html import unescape
 
 # ---------------------------------------------------------------------------
@@ -61,7 +63,7 @@ ERROR_ALERT_AFTER = 3
 # Danach wird alle so viele Fehlversuche erinnert (≈ 12 Stunden), solange es kaputt bleibt.
 ERROR_REMIND_EVERY = 72
 
-STATE_VERSION = 3 # erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
+STATE_VERSION = 4# erhöhen, wenn sich die Filter ändern -> nächster Lauf schickt neue Übersicht
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "state.json")
 HEADERS = {"User-Agent": "Mozilla/5.0 (preorder-alarm; privater Benachrichtigungs-Bot)"}
 
@@ -87,6 +89,13 @@ def fetch(url, attempts=3):
         except urllib.error.HTTPError as e:
             if e.code != 429 and e.code < 500 or attempt == attempts:
                 raise
+            if e.code == 429:  # "zu viele Anfragen": so lange warten, wie der Shop verlangt
+                try:
+                    wait = float(e.headers.get("Retry-After", 0))
+                except ValueError:
+                    wait = 0
+                time.sleep(min(max(wait, 10 * attempt), 60))
+                continue
         except (urllib.error.URLError, TimeoutError, ConnectionError):
             if attempt == attempts:
                 raise
@@ -126,31 +135,85 @@ def code_number(code):
 # Kann ein Shop nicht sicher sagen, ob etwas bestellbar ist, wirft er LayoutError.
 # ---------------------------------------------------------------------------
 
-def shopify(base):
-    """Shopify-Shops haben eine öffentliche JSON-Suche inkl. Verfügbarkeit."""
+# Shopify drosselt viele Anfragen von derselben Adresse über alle Shops hinweg.
+# Deshalb pro Lauf: 1x die neuesten Produkte (neue Preorders = neu angelegte Produkte, sofort erkannt)
+# plus nur ein Drittel der Set-Suchen im Wechsel (Nachlieferungen fallen so nach spätestens ~30 Min. auf).
+SHOPIFY_ROTATION = 3
+# Die Drosselung gilt pro Adresse über ALLE Shopify-Shops – darum nie zwei Shopify-Shops gleichzeitig.
+SHOPIFY_LOCK = threading.Lock()
+
+
+def shopify_price(value):
+    try:
+        value = float(value)
+    except (TypeError, ValueError):
+        return "?"
+    return f"{value:.2f} €" if value > 0 else "?"  # 0,00 = Platzhalter des Shops
+
+
+def shopify(base, raffles=False):
+    """Shopify-Shops haben öffentliche JSON-Schnittstellen inkl. Verfügbarkeit.
+    raffles=True: Shop verlost Displays (Raffle) – die sind dann nie "bestellbar", sondern 🎟️."""
+    def json_get(url):
+        try:
+            return json.loads(fetch(url))
+        except ValueError as e:
+            raise LayoutError(f"liefert kein gültiges JSON mehr ({e})")
+
     def scan(codes):
-        for code in codes:
-            url = f"{base}/search/suggest.json?" + urllib.parse.urlencode(
+        with SHOPIFY_LOCK:
+            return list(scan_locked(codes))
+
+    def scan_locked(codes):
+        found = {}
+        try:
+            newest = json_get(f"{base}/products.json?limit=250")["products"]
+            for p in newest:
+                variants = p["variants"]
+                found[p["handle"]] = {
+                    "title": p["title"],
+                    "url": f"{base}/products/{p['handle']}",
+                    "price": shopify_price(variants[0]["price"] if variants else None),
+                    "available": any(v["available"] for v in variants),
+                }
+        except (KeyError, TypeError) as e:
+            raise LayoutError(f"Produktliste hat unerwartetes Format ({e})")
+        time.sleep(1)
+
+        slot = int(time.time() // 600) % SHOPIFY_ROTATION
+        for code in codes[slot::SHOPIFY_ROTATION]:
+            data = json_get(f"{base}/search/suggest.json?" + urllib.parse.urlencode(
                 {"q": code, "resources[type]": "product", "resources[limit]": 10}
-            )
+            ))
             try:
-                products = json.loads(fetch(url))["resources"]["results"]["products"]
-            except (ValueError, KeyError, TypeError) as e:
-                raise LayoutError(f"Suche liefert kein gültiges JSON mehr ({e})")
+                products = data["resources"]["results"]["products"]
+            except (KeyError, TypeError) as e:
+                raise LayoutError(f"Suche hat unerwartetes Format ({e})")
             for p in products:
                 if not isinstance(p.get("available"), bool):
                     raise LayoutError("Verfügbarkeit fehlt in der Suche")
-                try:
-                    price = f"{float(p['price']):.2f} €"
-                except (KeyError, TypeError, ValueError):
-                    price = "?"
-                yield {
+                handle = p["url"].split("?")[0].rsplit("/", 1)[-1]
+                found[handle] = {
                     "title": p["title"],
-                    "url": base + p["url"].split("?")[0],
-                    "price": price,
+                    "url": f"{base}/products/{handle}",
+                    "price": shopify_price(p.get("price")),
                     "available": p["available"],
                 }
-            time.sleep(0.5)
+            time.sleep(1)
+
+        for handle, item in found.items():
+            info = describe(item["title"], item["url"])
+            if not info or not info[2]:
+                continue
+            if raffles and item["available"]:
+                product = json_get(f"{base}/products/{handle}.js")
+                plans = json.dumps(product.get("selling_plan_groups", [])).lower()
+                if "raffle" in plans:
+                    item["available"] = False
+                    item["raffle"] = True
+                time.sleep(1)
+            yield item
+    scan.zero_ok = True  # gültiges JSON ohne Treffer ist hier normal (Shop führt die Sets nicht)
     return scan
 
 
@@ -216,11 +279,50 @@ def goodgameguys(codes):
         }
 
 
+def cardcorner(codes):
+    """JTL-Shop. Card Corner verkauft Displays oft als Drop ('Verkauf startet bald')."""
+    base = "https://www.card-corner.de"
+    seen = set()
+    for code in codes:
+        html = fetch(f"{base}/?" + urllib.parse.urlencode({"qs": f"{code} Display"}))
+        time.sleep(0.5)
+        for href, title in re.findall(
+            r'class="[^"]*productbox-title[^"]*"[^>]*>\s*(?:<[^>]+>\s*)*<a[^>]*href="([^"]+)"[^>]*>\s*([^<]+)', html
+        ):
+            title = unescape(title).strip()
+            info = describe(title, href)
+            if href in seen or not info or not info[2]:
+                continue
+            seen.add(href)
+            page = fetch(href)
+            time.sleep(0.5)
+            status = re.search(r'<span class="status status-(\d)"[^>]*>\s*(?:<[^>]+>\s*)*([^<]+)', page)
+            if not status:
+                raise LayoutError(f"Lieferstatus nicht gefunden: {href}")
+            price = re.search(r'itemprop="price"\s+content="([\d.]+)"', page)
+            sale_not_started = "price_on_application" in page  # "Verkauf startet bald"
+            yield {
+                "title": title,
+                "url": href,
+                "price": f"{float(price.group(1)):.2f} €" if price and float(price.group(1)) > 0 else "?",
+                # status-0 = ausverkauft, 1/2 = Lieferzeit/auf Lager
+                "available": status.group(1) != "0" and not sale_not_started,
+            }
+
+
 SHOPS = {
     "Comic Planet": comicplanet,
     "Card Collector": shopify("https://card-collector.net"),
     "FantasiaCards": shopify("https://fantasiacards.de"),
     "GoodGameGuys": goodgameguys,
+    "Card Corner": cardcorner,
+    "Cardcosmos": shopify("https://cardcosmos.de"),
+    "Cardlantis": shopify("https://cardlantis.de"),
+    "Daesu Cards": shopify("https://daesu-cards.de"),
+    "Yonko TCG": shopify("https://yonko-tcg.de"),
+    "BreakTheCase": shopify("https://www.breakthecase.de"),
+    "Feenturm": shopify("https://feenturm.de", raffles=True),
+    "Play-Maniac": shopify("https://www.play-maniac.de"),
 }
 
 
@@ -345,7 +447,7 @@ def fmt(item):
 
 
 def overview(items):
-    lines = ["🤖 **Preorder-Alarm aktiv** – nur englische Displays  ·  🟢 bestellbar  🔴 nicht bestellbar"]
+    lines = ["🤖 **Preorder-Alarm aktiv** – nur englische Displays  ·  🟢 bestellbar  🎟️ Verlosung  🔴 nicht bestellbar"]
     for game in GAMES:
         by_code = {}
         for item in items.values():
@@ -355,7 +457,7 @@ def overview(items):
         for code in sorted(by_code, key=sort_key):
             shops = sorted(by_code[code], key=lambda i: (not i["available"], i["shop"]))
             lines.append(f"**{code}**  " + "  ·  ".join(
-                ("🟢 " if i["available"] else "🔴 ") + shop_link(i) for i in shops
+                ("🟢 " if i["available"] else "🎟️ " if i.get("raffle") else "🔴 ") + shop_link(i) for i in shops
             ))
         if not by_code:
             lines.append("(noch nichts gefunden)")
@@ -377,11 +479,15 @@ def main():
     print("Suche nach:", ", ".join(codes))
     messages = []
 
+    # Alle Shops gleichzeitig abfragen (jeder Shop für sich nacheinander, also nicht mehr Last pro Shop).
+    with ThreadPoolExecutor(max_workers=len(SHOPS)) as pool:
+        futures = {name: pool.submit(lambda s=scan: list(s(codes))) for name, scan in SHOPS.items()}
+
     for name, scan in SHOPS.items():
         try:
             found = {}
             recognized = 0
-            for item in scan(codes):
+            for item in futures[name].result():
                 info = describe(item["title"], item["url"])
                 if not info:
                     continue
@@ -394,7 +500,7 @@ def main():
                 if english and set(item_codes) & set(codes):
                     item.update(shop=name, game=game)
                     found[f"{name}|{item['url']}"] = item
-            if recognized == 0:
+            if recognized == 0 and not getattr(scan, "zero_ok", False):
                 # Jeder dieser Shops führt Displays – null Treffer heißt fast sicher: Seite umgebaut.
                 raise LayoutError("keine einzige Display-Seite erkannt")
         except Exception as e:  # ein kaputter Shop soll die anderen nicht aufhalten
@@ -424,7 +530,9 @@ def main():
         for key, item in found.items():
             before = items.get(key)
             if not silent:
-                if before is None and item["available"]:
+                if item.get("raffle") and not (before or {}).get("raffle"):
+                    messages.append("🎟️ **VERLOSUNG (Raffle):** " + fmt(item) + " – Teilnahme auf der Produktseite")
+                elif before is None and item["available"]:
                     messages.append("🟢 **JETZT BESTELLBAR:** " + fmt(item))
                 elif before is None:
                     messages.append("🆕 Neu gelistet (noch nicht bestellbar): " + fmt(item))

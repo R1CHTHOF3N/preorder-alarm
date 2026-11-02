@@ -4,7 +4,15 @@ Prüft alle 10 Minuten deutsche Shops auf **englische Displays** von Dragon Ball
 One Piece und schickt eine Discord-Nachricht, sobald etwas neu gelistet oder bestellbar wird.
 Läuft kostenlos auf GitHub, auch wenn dein PC aus ist.
 
-**Shops:** Comic Planet, Card Collector, FantasiaCards, GoodGameGuys
+**Shops (12, alle mit deutschem Impressum + USt-ID, Versand innerhalb DE ca. 4–7 €):**
+Comic Planet, Card Collector, FantasiaCards, GoodGameGuys, Card Corner, Cardcosmos, Cardlantis,
+Daesu Cards, Yonko TCG, BreakTheCase, Feenturm (verlost Displays per Raffle → 🎟️), Play-Maniac
+
+Nicht dabei: Games-Island, Fantasywelt, Keepseven (blocken automatische Abfragen),
+Gate to the Games (Trustpilot 2,8 ★, viele Beschwerden über Preise/Service), Shops außerhalb DE.
+
+Bei Shopify-Shops werden neu angelegte Produkte (= neue Preorders) bei jedem Lauf erkannt,
+Nachlieferungen bei schon gelisteten Displays spätestens nach ~30 Minuten (Shopify drosselt sonst).
 
 **Serien:**
 - Dragon Ball Fusion World: FB (Booster), ST (Story Booster), SB (Manga Booster)
