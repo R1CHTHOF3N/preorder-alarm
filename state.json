@@ -13,7 +13,7 @@
     "Play-Maniac": 0,
     "Yonko TCG": 0
   },
-  "heartbeat": "2026-11-02",
+  "heartbeat": "2026-11-03",
   "items": {
     "BreakTheCase|https://www.breakthecase.de/products/dragon-ball-fusion-world-fb10-cross-force-booster-box-display-englisch": {
       "available": false,
@@ -494,15 +494,6 @@
       "shop": "Feenturm",
       "title": "One Piece TCG - Booster Displays OP-17 (24 Booster) - english - jetzt vorbestellen",
       "url": "https://feenturm.de/products/one-piece-tcg-booster-displays-op-17-24-packs-en-jetzt-vorbestellen"
-    },
-    "Feenturm|https://feenturm.de/products/one-piece-tcg-booster-displays-op-18-24-booster-english-jetzt-vorbestellen": {
-      "available": false,
-      "game": "One Piece",
-      "price": "149.99 €",
-      "raffle": true,
-      "shop": "Feenturm",
-      "title": "One Piece TCG - Booster Displays OP-18 (24 Booster) - english - jetzt vorbestellen",
-      "url": "https://feenturm.de/products/one-piece-tcg-booster-displays-op-18-24-booster-english-jetzt-vorbestellen"
     },
     "GoodGameGuys|https://www.goodgameguys.de/dragon-ball-super-fusion-world-fb11-booster-display-englisch.html": {
       "available": false,
