@@ -2,7 +2,7 @@
   "errors": {
     "BreakTheCase": 0,
     "Card Collector": 0,
-    "Card Corner": 0,
+    "Card Corner": 1,
     "Cardcosmos": 0,
     "Cardlantis": 0,
     "Comic Planet": 0,
@@ -38,6 +38,14 @@
       "shop": "BreakTheCase",
       "title": "Dragon Ball Fusion World - SB02 - Manga Booster Display – Englisch",
       "url": "https://www.breakthecase.de/products/dragon-ball-fusion-world-sb02-manga-booster-display-englisch"
+    },
+    "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-adventure-on-kamis-island-booster-display-op-15-eb04-englisch": {
+      "available": true,
+      "game": "One Piece",
+      "price": "240.00 €",
+      "shop": "BreakTheCase",
+      "title": "One Piece Card Game - ADVENTURE ON KAMI'S ISLAND - Booster Display [OP-15-EB04] - Englisch",
+      "url": "https://www.breakthecase.de/products/one-piece-card-game-adventure-on-kamis-island-booster-display-op-15-eb04-englisch"
     },
     "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-op16-the-time-of-battle-booster-display-englisch-en": {
       "available": true,
