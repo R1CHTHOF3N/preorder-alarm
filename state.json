@@ -2,7 +2,7 @@
   "errors": {
     "BreakTheCase": 0,
     "Card Collector": 0,
-    "Card Corner": 1,
+    "Card Corner": 2,
     "Cardcosmos": 0,
     "Cardlantis": 0,
     "Comic Planet": 0,
@@ -54,6 +54,14 @@
       "shop": "BreakTheCase",
       "title": "One Piece Card Game - OP16 - The Time of Battle - Booster Display – Englisch [EN]",
       "url": "https://www.breakthecase.de/products/one-piece-card-game-op16-the-time-of-battle-booster-display-englisch-en"
+    },
+    "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-the-azure-sea-s-seven-booster-display-op-14-eb04-englisch": {
+      "available": true,
+      "game": "One Piece",
+      "price": "230.00 €",
+      "shop": "BreakTheCase",
+      "title": "One Piece Card Game - THE AZURE SEA’S SEVEN - Booster Display [OP-14-EB04] - Englisch",
+      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-azure-sea-s-seven-booster-display-op-14-eb04-englisch"
     },
     "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-the-best-prb01-display-englisch-1": {
       "available": true,
