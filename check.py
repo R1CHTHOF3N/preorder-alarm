@@ -54,9 +54,16 @@ EXCLUDE_WORDS = [
 ]
 ENGLISH_MARKERS = ["englisch", "english", "[eng]", "[en]", "(eng)", "(en)"]
 
-# Discord-Benutzer, der bei jeder Meldung angepingt wird (außer beim Wochen-Check).
-# Discord: Einstellungen -> Erweitert -> Entwicklermodus, dann Rechtsklick aufs Profil -> "ID kopieren".
-PING_USER_ID = "595970404363927564"
+# Jede Meldung pingt alle auf dem Server (außer dem Wochen-Check).
+PING = "@everyone"
+
+# Überteuerte Angebote (Wiederverkäufer-Preise) werden nicht gemeldet. Als "UVP" gilt der günstigste
+# Preis, den irgendein Shop je für das Set verlangt hat; gemeldet wird bis UVP + 25 %.
+PRICE_TOLERANCE = 1.25
+# Liegt der günstigste Preis eines Sets über dem 2,5-Fachen des günstigsten Sets derselben Serie,
+# ist das Set schon "gehypt" (alt, nur noch Marktpreise) -> dann zählt der Serien-Preis als UVP.
+HYPE_FACTOR = 2.5
+MIN_DISPLAY_PRICE = 40  # darunter ist es sicher kein Display-Preis (Tippfehler, Einzelbooster)
 
 # Ein Shop gilt erst nach so vielen Fehlversuchen hintereinander als kaputt (bei 10-Min-Takt ≈ 30 Min).
 # Einzelne Aussetzer (Timeout, kurz überlastet) lösen so keinen Fehlalarm aus.
@@ -297,17 +304,23 @@ def cardcorner(codes):
             seen.add(href)
             page = fetch(href)
             time.sleep(0.5)
-            status = re.search(r'<span class="status status-(\d)"[^>]*>\s*(?:<[^>]+>\s*)*([^<]+)', page)
-            if not status:
+            # Nur den Produktbereich lesen – darunter stehen empfohlene Artikel mit eigenen Preisen/Status.
+            start, end = page.find('class="product-details'), page.find("side-right")
+            if start < 0 or end < start:
+                raise LayoutError(f"Produktbereich nicht gefunden: {href}")
+            main = page[start:end]
+            status = re.search(r'<span class="status status-(\d)"', main)
+            sale_not_started = "price_on_application" in main  # "Verkauf startet bald"
+            coming_soon = "coming_soon" in main  # "Versand am …", noch kein Warenkorb
+            if not (status or sale_not_started or coming_soon):
                 raise LayoutError(f"Lieferstatus nicht gefunden: {href}")
-            price = re.search(r'itemprop="price"\s+content="([\d.]+)"', page)
-            sale_not_started = "price_on_application" in page  # "Verkauf startet bald"
+            price = re.search(r'itemprop="price"\s+content="([\d.]+)"', main)
             yield {
                 "title": title,
                 "url": href,
                 "price": f"{float(price.group(1)):.2f} €" if price and float(price.group(1)) > 0 else "?",
                 # status-0 = ausverkauft, 1/2 = Lieferzeit/auf Lager
-                "available": status.group(1) != "0" and not sale_not_started,
+                "available": bool(status) and status.group(1) != "0" and not sale_not_started and not coming_soon,
             }
 
 
@@ -372,9 +385,9 @@ GAME_ICON = {"Dragon Ball": "🐉", "One Piece": "🏴‍☠️"}
 
 
 def post_discord(webhook, embeds, ping=False):
-    payload = {"embeds": embeds, "allowed_mentions": {"parse": [], "users": [PING_USER_ID] if ping else []}}
+    payload = {"embeds": embeds, "allowed_mentions": {"parse": ["everyone"] if ping else []}}
     if ping:
-        payload["content"] = f"<@{PING_USER_ID}>"
+        payload["content"] = PING
     body = json.dumps(payload).encode()
     for attempt in range(1, 6):
         req = urllib.request.Request(
@@ -478,7 +491,35 @@ def notice(kind, title, description=""):
     return {"title": title, "description": description, "color": COLOR[kind], "timestamp": now_iso()}
 
 
-def event(kind, headline, item, note=""):
+def number_de(value):
+    return f"{value:.2f}".replace(".", ",")
+
+
+def update_ref_prices(ref, items):
+    """Merkt sich pro Set den günstigsten je gesehenen Preis (sinkt nur, steigt nie)."""
+    for item in items.values():
+        p = price_value(item)
+        if MIN_DISPLAY_PRICE <= p < float("inf"):
+            code = main_code(item)
+            ref[code] = min(ref.get(code, p), p)
+
+
+def uvp(code, ref):
+    """Geschätzte UVP eines Sets; None, wenn noch kein Preis bekannt ist."""
+    prefix = re.match(r"[A-Z]+", code).group(0)
+    series = [v for c, v in ref.items() if re.match(r"[A-Z]+", c).group(0) == prefix]
+    if code not in ref:
+        return min(series) if series else None
+    return ref[code] if ref[code] <= HYPE_FACTOR * min(series) else min(series)
+
+
+def overpriced(item, ref):
+    limit = uvp(main_code(item), ref)
+    return limit is not None and price_value(item) < float("inf") and price_value(item) > limit * PRICE_TOLERANCE
+
+
+def event(kind, headline, item, note="", ref=None):
+    estimate = uvp(main_code(item), ref or {})
     return {
         "title": headline[:256],
         "url": item["url"],
@@ -489,11 +530,12 @@ def event(kind, headline, item, note=""):
             {"name": "Preis", "value": price_de(item["price"]), "inline": True},
             {"name": "Set", "value": f"{GAME_ICON.get(item['game'], '')} {main_code(item)}", "inline": True},
         ],
+        "footer": {"text": f"UVP ca. {number_de(estimate)} €" if estimate else "UVP noch unbekannt"},
         "timestamp": now_iso(),
     }
 
 
-def overview(items, broken=()):
+def overview(items, broken=(), ref=None):
     embeds = [notice(
         "info", "📋 Preorder-Alarm – Übersicht",
         "🟢 bestellbar  ·  🔴 noch nicht / ausverkauft\n"
@@ -515,7 +557,9 @@ def overview(items, broken=()):
                     chunks.append([])
                 chunks[-1].append(line)
             for n, chunk in enumerate(chunks):
-                fields.append({"name": f"**{code}**" if n == 0 else "\u200b", "value": "\n".join(chunk), "inline": True})
+                estimate = uvp(code, ref or {})
+                name = f"**{code}**" + (f" · UVP ca. {estimate:.0f} €" if estimate else "")
+                fields.append({"name": name if n == 0 else "\u200b", "value": "\n".join(chunk), "inline": True})
         title = f"{GAME_ICON[game]} {game}"
         if not fields:
             embeds.append(notice(game, title, "Noch nichts gefunden."))
@@ -545,9 +589,11 @@ def main():
     # Shops, die schon mal erfolgreich geprüft wurden. Ein neuer (oder beim ersten Lauf
     # ausgefallener) Shop wird beim ersten Erfolg still übernommen statt alles als 🆕 zu melden.
     known_shops = set(old.get("known_shops", []))
+    ref = dict(old.get("ref_price", {}))
     codes = codes_to_search(series_max)
     print("Suche nach:", ", ".join(codes))
     messages = []
+    changes = []  # Statuswechsel; erst nach allen Shops melden, wenn die UVP-Schätzung aktuell ist
 
     # Alle Shops gleichzeitig abfragen (jeder Shop für sich nacheinander, also nicht mehr Last pro Shop).
     with ThreadPoolExecutor(max_workers=len(SHOPS)) as pool:
@@ -602,18 +648,26 @@ def main():
             before = items.get(key)
             if not silent:
                 if before is None and item["available"]:
-                    messages.append(event("buy", f"🟢 {main_code(item)} jetzt bestellbar!", item))
+                    changes.append(("buy", "jetzt bestellbar!", item, ""))
                 elif before is None:
-                    messages.append(event("new", f"🆕 {main_code(item)} neu gelistet", item, "Noch nicht bestellbar."))
+                    changes.append(("new", "neu gelistet", item, "Noch nicht bestellbar."))
                 elif item["available"] and not before["available"]:
-                    messages.append(event("buy", f"🟢 {main_code(item)} wieder bestellbar!", item))
+                    changes.append(("buy", "wieder bestellbar!", item, ""))
             items[key] = item
+
+    update_ref_prices(ref, items)
+    for kind, text, item, note in changes:
+        if overpriced(item, ref):
+            print(f"Überteuert, nicht gemeldet: {item['shop']} {item['title']} {item['price']}")
+            continue
+        icon = "🟢" if kind == "buy" else "🆕"
+        messages.append(event(kind, f"{icon} {main_code(item)} {text}", item, note, ref))
 
     today = datetime.date.today()
     week = f"{today.isocalendar()[0]}-W{today.isocalendar()[1]:02d}"
 
     if first_run:
-        messages = overview(items, [n for n, c in errors.items() if c])
+        messages = overview(items, [n for n, c in errors.items() if c], ref)
     quiet = []
     if not first_run and old.get("status_week") != week:
         # Einmal pro Woche ein Lebenszeichen (ohne Ping): Bleibt es aus, läuft der Alarm nicht mehr.
@@ -634,6 +688,7 @@ def main():
         "items": items,
         "errors": errors,
         "series_max": series_max,
+        "ref_price": ref,
         "known_shops": sorted(known_shops),
         "status_week": week,
         # Einmal täglich ändert sich die Datei, damit GitHub das Repo als aktiv ansieht.

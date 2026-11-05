@@ -25,8 +25,12 @@ irgendein Shop listet (auch japanisch, weil die früher erscheinen), und sucht i
 Taucht z. B. FB14 auf, wird ab dann auch nach FB15 und FB16 gesucht. Eine ganz neue Serie
 (neues Kürzel) müsste man in `check.py` unter `SERIES` eintragen.
 
-Meldungen kommen als farbige Karten und pingen dich direkt (`PING_USER_ID` in `check.py`) –
-außer dem 💓 Wochen-Check.
+Meldungen kommen als farbige Karten mit `@everyone` – außer dem 💓 Wochen-Check.
+
+**Keine Wucherpreise:** Als „UVP“ merkt sich das Skript pro Set den günstigsten Preis, den je ein Shop
+verlangt hat (steht klein unter jeder Meldung). Angebote mehr als 25 % darüber werden nicht gemeldet.
+Ist ein Set schon so gehypt, dass es nirgends mehr normal zu haben ist, zählt der günstigste Preis
+der Serie (z. B. das billigste OP-Set). Ist der Preis noch unbekannt („Preis folgt“), wird immer gemeldet.
 
 | Nachricht | Bedeutung |
 |---|---|

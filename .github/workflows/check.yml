@@ -43,9 +43,9 @@ jobs:
         run: |
           prev=$(gh run list -R "$GITHUB_REPOSITORY" --workflow check.yml --status completed --limit 1 --json conclusion --jq '.[0].conclusion' || echo unknown)
           if [ "$prev" = "failure" ]; then echo "Vorheriger Lauf schon fehlgeschlagen, bereits gemeldet."; exit 0; fi
-          jq -n --arg u "$RUN_URL" --arg id "$(sed -n 's/^PING_USER_ID = "\([0-9]*\)".*/\1/p' check.py)" \
-            '{content: "<@\($id)>", embeds: [{title: "❌ Preorder-Alarm ist abgestürzt", url: $u, color: 15158332,
-              description: "Solange werden **keine** Preorders erkannt! Details: Titel anklicken."}], allowed_mentions: {users: [$id]}}' |
+          jq -n --arg u "$RUN_URL" \
+            '{content: "@everyone", embeds: [{title: "❌ Preorder-Alarm ist abgestürzt", url: $u, color: 15158332,
+              description: "Solange werden **keine** Preorders erkannt! Details: Titel anklicken."}], allowed_mentions: {parse: ["everyone"]}}' |
             curl -sSf --retry 3 -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK_URL"
 
       - name: Entwarnung nach Absturz
@@ -53,6 +53,5 @@ jobs:
         run: |
           prev=$(gh run list -R "$GITHUB_REPOSITORY" --workflow check.yml --status completed --limit 1 --json conclusion --jq '.[0].conclusion' || echo unknown)
           if [ "$prev" != "failure" ]; then exit 0; fi
-          jq -n --arg id "$(sed -n 's/^PING_USER_ID = "\([0-9]*\)".*/\1/p' check.py)" \
-            '{content: "<@\($id)>", embeds: [{title: "✅ Preorder-Alarm läuft wieder", color: 3066993}], allowed_mentions: {users: [$id]}}' |
+          jq -n '{content: "@everyone", embeds: [{title: "✅ Preorder-Alarm läuft wieder", color: 3066993}], allowed_mentions: {parse: ["everyone"]}}' |
             curl -sSf --retry 3 -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK_URL" || true
