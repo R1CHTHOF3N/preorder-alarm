@@ -2,7 +2,7 @@
   "errors": {
     "BreakTheCase": 0,
     "Card Collector": 0,
-    "Card Corner": 3,
+    "Card Corner": 4,
     "Cardcosmos": 0,
     "Cardlantis": 0,
     "Comic Planet": 0,
@@ -78,6 +78,14 @@
       "shop": "BreakTheCase",
       "title": "One Piece Card Game - THE BEST Vol. 2 - Booster Display – PRB02 - Englisch",
       "url": "https://www.breakthecase.de/products/one-piece-card-game-the-best-vol-2-booster-display-prb02-englisch"
+    },
+    "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-the-worlds-strongest-warriors-booster-display-op-17-englisch": {
+      "available": true,
+      "game": "One Piece",
+      "price": "340.00 €",
+      "shop": "BreakTheCase",
+      "title": "One Piece Card Game - THE WORLD'S STRONGEST WARRIORS - Booster Display [OP-17] - Englisch",
+      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-worlds-strongest-warriors-booster-display-op-17-englisch"
     },
     "Card Collector|https://card-collector.net/products/dragon-ball-super-card-game-fusion-world-fb12-display-englisch-ab-11-12-2026": {
       "available": false,
@@ -496,7 +504,7 @@
       "url": "https://fantasiacards.de/products/one-piece-card-game-prb02-display-eng"
     },
     "Feenturm|https://feenturm.de/products/dragonball-super-card-game-fusion-world-fb10-booster-display-englisch": {
-      "available": true,
+      "available": false,
       "game": "Dragon Ball",
       "price": "149.99 €",
       "shop": "Feenturm",
