@@ -1,0 +1,522 @@
+{
+  "errors": {
+    "BreakTheCase": 0,
+    "Card Collector": 0,
+    "Cardcosmos": 0,
+    "Cardlantis": 0,
+    "FantasiaCards": 0,
+    "Feenturm": 0,
+    "Play-Maniac": 0,
+    "Yonko TCG": 0
+  },
+  "heartbeat": "2026-11-06",
+  "items": {
+    "BreakTheCase|https://www.breakthecase.de/products/pokemon-chaos-rising-mega-evolution-me04-display-36x-booster-englisch": {
+      "available": true,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 240.0,
+      "shop": "BreakTheCase",
+      "title": "Pokemon - Chaos Rising - Mega Evolution - ME04 – Display (36x Booster) – Englisch",
+      "url": "https://www.breakthecase.de/products/pokemon-chaos-rising-mega-evolution-me04-display-36x-booster-englisch"
+    },
+    "BreakTheCase|https://www.breakthecase.de/products/pokemon-delta-reign-mega-evolution-me06-booster-bundle-englisch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 50.0,
+      "shop": "BreakTheCase",
+      "title": "Pokemon - Delta Reign - Mega Evolution - ME06 – Booster Bundle – Englisch",
+      "url": "https://www.breakthecase.de/products/pokemon-delta-reign-mega-evolution-me06-booster-bundle-englisch"
+    },
+    "BreakTheCase|https://www.breakthecase.de/products/pokemon-delta-reign-mega-evolution-me06-elite-trainer-box-englisch": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 100.0,
+      "shop": "BreakTheCase",
+      "title": "Pokemon - Delta Reign - Mega Evolution - ME06 – Elite Trainer Box – Englisch",
+      "url": "https://www.breakthecase.de/products/pokemon-delta-reign-mega-evolution-me06-elite-trainer-box-englisch"
+    },
+    "BreakTheCase|https://www.breakthecase.de/products/pokemon-pitch-black-mega-evolution-me05-display-36x-booster-englisch": {
+      "available": true,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 210.0,
+      "shop": "BreakTheCase",
+      "title": "Pokemon - Pitch Black - Mega Evolution - ME05 – Display (36x Booster) – Englisch",
+      "url": "https://www.breakthecase.de/products/pokemon-pitch-black-mega-evolution-me05-display-36x-booster-englisch"
+    },
+    "BreakTheCase|https://www.breakthecase.de/products/pokemon-scarlet-violet-journey-together-sv09-display-36x-booster-englisch": {
+      "available": true,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 250.0,
+      "shop": "BreakTheCase",
+      "title": "Pokemon - Scarlet & Violet - Journey Together - SV09 - Display (36x Booster) - Englisch",
+      "url": "https://www.breakthecase.de/products/pokemon-scarlet-violet-journey-together-sv09-display-36x-booster-englisch"
+    },
+    "Card Collector|https://card-collector.net/products/pokemon-mega-entwicklung-delta-herrschaft-booster-display-deutsch": {
+      "available": false,
+      "kind": "Display",
+      "lang": "DE",
+      "price": 180.0,
+      "shop": "Card Collector",
+      "title": "Pokémon – Mega-Entwicklung: Delta Herrschaft Display Deutsch",
+      "url": "https://card-collector.net/products/pokemon-mega-entwicklung-delta-herrschaft-booster-display-deutsch"
+    },
+    "Card Collector|https://card-collector.net/products/pokemon-mega-evolution-ascended-heroes-elite-trainer-box-englisch": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 190.0,
+      "shop": "Card Collector",
+      "title": "Pokemon Mega Evolution - Ascended Heroes - Elite Trainer Box Englisch",
+      "url": "https://card-collector.net/products/pokemon-mega-evolution-ascended-heroes-elite-trainer-box-englisch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-30-jahre-boosterbundle-deutsch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 79.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - 30 Jahre Boosterbundle - DE",
+      "url": "https://cardcosmos.de/products/pokemon-30-jahre-boosterbundle-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-30th-celebration-elite-trainer-box-englisch": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 169.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - 30th Celebration Elite Trainer Box - EN",
+      "url": "https://cardcosmos.de/products/pokemon-30th-celebration-elite-trainer-box-englisch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-black-bolt-booster-bundle-englisch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 99.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Black Bolt Booster Bundle - EN",
+      "url": "https://cardcosmos.de/products/pokemon-black-bolt-booster-bundle-englisch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-evolving-skies-elite-trainer-box-umbreon-englisch": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 599.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Evolving Skies Elite Trainer Box Umbreon - EN",
+      "url": "https://cardcosmos.de/products/pokemon-evolving-skies-elite-trainer-box-umbreon-englisch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-karmesin-purpur-weisse-flammen-booster-bundle-de": {
+      "available": false,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 49.99,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Karmesin & Purpur: Weiße Flammen Booster Bundle - DE",
+      "url": "https://cardcosmos.de/products/pokemon-karmesin-purpur-weisse-flammen-booster-bundle-de"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-maskerade-im-zwielicht-booster-bundle-deutsch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 99.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Maskerade im Zwielicht Booster Bundle - DE",
+      "url": "https://cardcosmos.de/products/pokemon-maskerade-im-zwielicht-booster-bundle-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-mega-entwicklung-delta-herrschaft-booster-bundle-deutsch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 59.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Mega-Entwicklung Delta-Herrschaft Booster Bundle - DE",
+      "url": "https://cardcosmos.de/products/pokemon-mega-entwicklung-delta-herrschaft-booster-bundle-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-mega-entwicklung-delta-herrschaft-top-trainer-box-deutsch": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 59.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Mega-Entwicklung Delta-Herrschaft Top-Trainer-Box - DE",
+      "url": "https://cardcosmos.de/products/pokemon-mega-entwicklung-delta-herrschaft-top-trainer-box-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-mega-entwicklung-optimale-ordnung-top-trainer-box-deutsch": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 89.99,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Mega-Entwicklung: Optimale Ordnung Top Trainer Box - DE",
+      "url": "https://cardcosmos.de/products/pokemon-mega-entwicklung-optimale-ordnung-top-trainer-box-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-mega-evolution-pitch-black-booster-display-englisch": {
+      "available": true,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 219.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Mega Evolution Pitch Black Booster Display - EN",
+      "url": "https://cardcosmos.de/products/pokemon-mega-evolution-pitch-black-booster-display-englisch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-prismatic-evolutions-booster-bundle-englisch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 109.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - SV8.5 Prismatic Evolutions Booster Bundle - EN",
+      "url": "https://cardcosmos.de/products/pokemon-prismatic-evolutions-booster-bundle-englisch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-scarlet-violet-black-bolt-booster-bundle-englisch": {
+      "available": false,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 89.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Scarlet & Violet: Black Bolt Booster Bundle - EN",
+      "url": "https://cardcosmos.de/products/pokemon-scarlet-violet-black-bolt-booster-bundle-englisch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-scarlet-violet-destined-rivals-elite-trainer-box-en": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 159.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Scarlet & Violet: Destined Rivals Elite Trainer Box - EN",
+      "url": "https://cardcosmos.de/products/pokemon-scarlet-violet-destined-rivals-elite-trainer-box-en"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-scarlet-violet-prismatic-evolutions-elite-trainer-box-en": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 199.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Scarlet & Violet: Prismatic Evolutions Elite Trainer Box - EN",
+      "url": "https://cardcosmos.de/products/pokemon-scarlet-violet-prismatic-evolutions-elite-trainer-box-en"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-schwarze-blitze-booster-bundle-deutsch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 94.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Schwarze Blitze Booster Bundle - DE",
+      "url": "https://cardcosmos.de/products/pokemon-schwarze-blitze-booster-bundle-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-schwert-schild-farbenschock-top-trainer-box-deutsch": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 189.99,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Schwert & Schild Farbenschock Top-Trainer-Box - DE",
+      "url": "https://cardcosmos.de/products/pokemon-schwert-schild-farbenschock-top-trainer-box-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-sonne-mond-verborgenes-schicksal-top-trainer-box-deutsch": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 399.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Sonne & Mond: Verborgenes Schicksal Top Trainer Box - DE",
+      "url": "https://cardcosmos.de/products/pokemon-sonne-mond-verborgenes-schicksal-top-trainer-box-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-twilight-masquerade-elite-trainer-box-englisch": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 119.99,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Twilight Masquerade Elite Trainer Box - EN",
+      "url": "https://cardcosmos.de/products/pokemon-twilight-masquerade-elite-trainer-box-englisch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-verlorener-ursprung-top-trainer-box-deutsch": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 199.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Verlorener Ursprung Top-Trainer-Box - DE",
+      "url": "https://cardcosmos.de/products/pokemon-verlorener-ursprung-top-trainer-box-deutsch"
+    },
+    "Cardcosmos|https://cardcosmos.de/products/pokemon-weisse-flammen-booster-bundle-deutsch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 94.9,
+      "shop": "Cardcosmos",
+      "title": "Pokémon - Weiße Flammen Booster Bundle - DE",
+      "url": "https://cardcosmos.de/products/pokemon-weisse-flammen-booster-bundle-deutsch"
+    },
+    "Cardlantis|https://cardlantis.de/products/pokemon-sv06-scarlet-violet-twilight-masquerade-booster-display-36-englisch": {
+      "available": true,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 499.99,
+      "shop": "Cardlantis",
+      "title": "Pokémon SV06 Scarlet & Violet Twilight Masquerade Booster Display (36) Englisch -  sofort lieferbar",
+      "url": "https://cardlantis.de/products/pokemon-sv06-scarlet-violet-twilight-masquerade-booster-display-36-englisch"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-151-karmesin-und-purpur-booster-bundle-de-kopie": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 174.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - 151 Karmesin und Purpur - Booster Bundle [DE]",
+      "url": "https://fantasiacards.de/products/pokemon-151-karmesin-und-purpur-booster-bundle-de-kopie"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-30th-celebration-booster-bundle-eng": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 99.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - 30th Celebration - Booster Bundle [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-30th-celebration-booster-bundle-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-30th-celebration-elite-trainer-box-eng": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 199.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - 30th Celebration - Elite Trainer Box [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-30th-celebration-elite-trainer-box-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-chaos-rising-display-eng": {
+      "available": true,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 299.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Chaos Rising - Display [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-chaos-rising-display-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-destined-rivals-elite-trainer-box-eng-kopie": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 159.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Destined Rivals - Elite Trainer Box [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-destined-rivals-elite-trainer-box-eng-kopie"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-german-mega-booster-bundle-de": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 53.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - German Mega Booster Bundle [DE]",
+      "url": "https://fantasiacards.de/products/pokemon-german-mega-booster-bundle-de"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-mega-entwicklung-display-de-1": {
+      "available": true,
+      "kind": "Display",
+      "lang": "DE",
+      "price": 299.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Mega Entwicklung - Display [DE]",
+      "url": "https://fantasiacards.de/products/pokemon-mega-entwicklung-display-de-1"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-nebel-der-sagen-booster-bundle-de": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 64.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Nebel der Sagen - Booster Bundle - [DE]",
+      "url": "https://fantasiacards.de/products/pokemon-nebel-der-sagen-booster-bundle-de"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-paldea-evolved-display-eng": {
+      "available": true,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 449.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Paldea Evolved - Display [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-paldea-evolved-display-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-phantasmal-flames-elite-trainer-box-eng-1": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 159.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Phantasmal Flames - Elite Trainer Box [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-phantasmal-flames-elite-trainer-box-eng-1"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-pitch-black-display-eng": {
+      "available": true,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 239.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Pitch Black - Display [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-pitch-black-display-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-prismatic-evolutions-booster-bundle-eng": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 129.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Prismatic Evolutions - Booster Bundle [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-prismatic-evolutions-booster-bundle-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-reisegefahrten-display-de": {
+      "available": true,
+      "kind": "Display",
+      "lang": "DE",
+      "price": 229.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Reisegefährten - Display [DE]",
+      "url": "https://fantasiacards.de/products/pokemon-reisegefahrten-display-de"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-shrouded-fable-booster-bundle-eng": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 69.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Shrouded Fable - Booster Bundle [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-shrouded-fable-booster-bundle-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-twilight-masquerade-display-eng": {
+      "available": false,
+      "kind": "Display",
+      "lang": "EN",
+      "price": 399.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - Twilight Masquerade - Display [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-twilight-masquerade-display-eng"
+    },
+    "FantasiaCards|https://fantasiacards.de/products/pokemon-white-flare-elite-trainer-box-eng-1": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 169.99,
+      "shop": "FantasiaCards",
+      "title": "Pokemon - White Flare - Elite Trainer Box [ENG]",
+      "url": "https://fantasiacards.de/products/pokemon-white-flare-elite-trainer-box-eng-1"
+    },
+    "Feenturm|https://feenturm.de/products/pokemon-mega-entwicklung-erhabene-helden-top-trainer-box-de": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 160.0,
+      "shop": "Feenturm",
+      "title": "Pokémon TCG - Erhabene Helden – Top Trainer Box - deutsch",
+      "url": "https://feenturm.de/products/pokemon-mega-entwicklung-erhabene-helden-top-trainer-box-de"
+    },
+    "Feenturm|https://feenturm.de/products/pokemon-mega-entwicklung-optimale-ordnung-top-trainer-box-deutsch": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 74.0,
+      "shop": "Feenturm",
+      "title": "Pokémon TCG - Mega Entwicklung: Optimale Ordnung - Top Trainer Box - deutsch",
+      "url": "https://feenturm.de/products/pokemon-mega-entwicklung-optimale-ordnung-top-trainer-box-deutsch"
+    },
+    "Feenturm|https://feenturm.de/products/pokemon-mega-entwicklung-wachsendes-chaos-booster-bundle-deutsch-jetzt-vorbestellen": {
+      "available": false,
+      "kind": "Booster-Bundle",
+      "lang": "DE",
+      "price": 40.0,
+      "shop": "Feenturm",
+      "title": "Pokémon TCG  - Mega Entwicklung: Wachsendes Chaos - Booster Bundle - deutsch - jetzt vorbestellen",
+      "url": "https://feenturm.de/products/pokemon-mega-entwicklung-wachsendes-chaos-booster-bundle-deutsch-jetzt-vorbestellen"
+    },
+    "Feenturm|https://feenturm.de/products/pokemon-mega-entwicklung-wachsendes-chaos-top-trainer-box-deutsch-jetzt-vorbestellen": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 70.0,
+      "shop": "Feenturm",
+      "title": "Pokémon TCG - Mega Entwicklung: Wachsendes Chaos - Top-Trainer-Box - deutsch",
+      "url": "https://feenturm.de/products/pokemon-mega-entwicklung-wachsendes-chaos-top-trainer-box-deutsch-jetzt-vorbestellen"
+    },
+    "Feenturm|https://feenturm.de/products/pokemon-mega-evolution-pitch-black-booster-bundle-englisch": {
+      "available": true,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 44.99,
+      "shop": "Feenturm",
+      "title": "Pokémon - Mega Evolution: Pitch Black - Booster Bundle - englisch",
+      "url": "https://feenturm.de/products/pokemon-mega-evolution-pitch-black-booster-bundle-englisch"
+    },
+    "Play-Maniac|https://www.play-maniac.de/products/pokemon-30-jahre-top-trainer-box-deutsch": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 119.99,
+      "shop": "Play-Maniac",
+      "title": "Pokémon 30 Jahre Top Trainer Box Deutsch",
+      "url": "https://www.play-maniac.de/products/pokemon-30-jahre-top-trainer-box-deutsch"
+    },
+    "Yonko TCG|https://yonko-tcg.de/products/de-pokemon-top-trainer-box-mega-entwicklung-delta-herrschaft-me06": {
+      "available": true,
+      "kind": "Top-Trainer-Box",
+      "lang": "DE",
+      "price": 74.95,
+      "shop": "Yonko TCG",
+      "title": "[DE] Pokémon Top Trainer Box - Mega-Entwicklung : Delta-Herrschaft (ME06)",
+      "url": "https://yonko-tcg.de/products/de-pokemon-top-trainer-box-mega-entwicklung-delta-herrschaft-me06"
+    },
+    "Yonko TCG|https://yonko-tcg.de/products/eng-pokemon-booster-bundle-destined-rivals-sv10": {
+      "available": false,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 69.95,
+      "shop": "Yonko TCG",
+      "title": "[ENG] Pokémon Booster Bundle - Destined Rivals (SV10)",
+      "url": "https://yonko-tcg.de/products/eng-pokemon-booster-bundle-destined-rivals-sv10"
+    },
+    "Yonko TCG|https://yonko-tcg.de/products/eng-pokemon-booster-bundle-surging-sparks-sv08": {
+      "available": false,
+      "kind": "Booster-Bundle",
+      "lang": "EN",
+      "price": 59.95,
+      "shop": "Yonko TCG",
+      "title": "[ENG] Pokémon Booster Bundle - Surging Sparks (SV08)",
+      "url": "https://yonko-tcg.de/products/eng-pokemon-booster-bundle-surging-sparks-sv08"
+    },
+    "Yonko TCG|https://yonko-tcg.de/products/eng-pokemon-elite-trainer-box-phantasmal-flames-me02": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 119.95,
+      "shop": "Yonko TCG",
+      "title": "[ENG] Pokémon Elite Trainer Box - Phantasmal Flames (ME02)",
+      "url": "https://yonko-tcg.de/products/eng-pokemon-elite-trainer-box-phantasmal-flames-me02"
+    },
+    "Yonko TCG|https://yonko-tcg.de/products/eng-pokemon-elite-trainer-box-prismatic-evolutions-sv8-5": {
+      "available": false,
+      "kind": "Top-Trainer-Box",
+      "lang": "EN",
+      "price": 204.95,
+      "shop": "Yonko TCG",
+      "title": "[ENG] Pokémon Elite Trainer Box – Prismatic Evolutions (SV8.5)",
+      "url": "https://yonko-tcg.de/products/eng-pokemon-elite-trainer-box-prismatic-evolutions-sv8-5"
+    }
+  },
+  "known_shops": [
+    "BreakTheCase",
+    "Card Collector",
+    "Cardcosmos",
+    "Cardlantis",
+    "FantasiaCards",
+    "Feenturm",
+    "Play-Maniac",
+    "Yonko TCG"
+  ],
+  "status_week": "2026-W45",
+  "version": 1
+}
