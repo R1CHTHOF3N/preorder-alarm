@@ -1,0 +1,38 @@
+name: Pokemon-Check
+
+on:
+  schedule:
+    # Alle 10 Minuten, um 5 Min. versetzt zum Preorder-Check (dieselben Shops, Shopify drosselt sonst).
+    - cron: "5-59/10 * * * *"
+  workflow_dispatch: # Start per Knopfdruck unter "Actions"
+
+permissions:
+  contents: write # um pokemon_state.json zurückzuspeichern
+
+concurrency:
+  group: pokemon-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DISCORD_WEBHOOK_POKEMON: ${{ secrets.DISCORD_WEBHOOK_POKEMON }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Shops prüfen
+        timeout-minutes: 10
+        run: python3 pokemon.py
+
+      - name: Stand speichern
+        run: |
+          git config user.name "preorder-alarm"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pokemon_state.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Pokémon-Stand aktualisiert"
+          # Die anderen Checks pushen in dasselbe Repo -> bei Konflikt kurz neu holen und nochmal.
+          for i in 1 2 3; do git pull --rebase -q && git push && exit 0; sleep 5; done
+          exit 1

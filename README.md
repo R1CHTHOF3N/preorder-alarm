@@ -128,3 +128,26 @@ Cyberport, Galaxus, GameStop, Kaufland, Euronics, Medimax, notebooksbilliger, id
 **Einrichtung:** Im PS5-Kanal (Kanal-Einstellungen → Integrationen → Webhooks → Neuer Webhook)
 Webhook-URL kopieren und in GitHub als Secret **`DISCORD_WEBHOOK_PS5PRO`** speichern
 (Settings → Secrets and variables → Actions). Dann Actions → **PS5-Pro-Check** → Run workflow.
+
+---
+
+# Pokémon-Alarm (dritter Kanal)
+
+`pokemon.py` prüft **alle 10 Minuten** (versetzt zum Preorder-Check) Pokémon-Produkte auf Deutsch 🇩🇪
+und Englisch 🇬🇧 und pingt `@everyone`, sobald etwas **zum normalen Preis** bestellbar wird.
+
+**Gesucht:** Displays, Booster (einzeln), Top-Trainer-/Elite-Trainer-Boxen, Booster-Bundles.
+**Ignoriert:** Schlüsselanhänger, Tins, Kollektionen, Blister, Zubehör, Pokémon-Center-Editionen,
+bewertete Karten (PSA …), gemischte Shop-Bundles, Japanisch/Chinesisch/Koreanisch.
+
+**Preisgrenzen** (oben in `pokemon.py` unter `KINDS` änderbar): Display 189,99 € · Top-Trainer-Box 69,99 € ·
+Booster-Bundle 44,99 € · Booster 6,99 €. Alles darüber gilt als Wucher und wird nicht gemeldet.
+
+**Neue Sets:** Keine Pflege nötig. Jeder Lauf liest die neuesten Produkte jedes Shops; ein neues Set
+wird gemeldet, sobald ein Shop es zum Normalpreis bestellbar anlegt. Dazu läuft im Wechsel eine Suche,
+damit auch Nachlieferungen älterer Produkte auffallen (spätestens nach ~50 Min.).
+
+**Shops:** Cardcosmos, FantasiaCards, Cardlantis, BreakTheCase, Feenturm, Play-Maniac, Yonko TCG, Card Collector.
+Nicht dabei: Pokémon Center (harte Bot-Sperre durch Imperva), Amazon, Smyths, Thalia, Kaufland (blocken ebenfalls).
+
+**Einrichtung:** Im Pokémon-Kanal einen Webhook anlegen und in GitHub als Secret **`DISCORD_WEBHOOK_POKEMON`** speichern.
