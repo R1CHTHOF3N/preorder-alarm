@@ -21,7 +21,8 @@
       "price": "200.00 €",
       "shop": "BreakTheCase",
       "title": "Dragon Ball Fusion World - FB10 - CROSS FORCE - Booster Box Display – Englisch",
-      "url": "https://www.breakthecase.de/products/dragon-ball-fusion-world-fb10-cross-force-booster-box-display-englisch"
+      "url": "https://www.breakthecase.de/products/dragon-ball-fusion-world-fb10-cross-force-booster-box-display-englisch",
+      "was_available": false
     },
     "BreakTheCase|https://www.breakthecase.de/products/dragon-ball-fusion-world-fb10-story-booster-booster-box-display-englisch": {
       "available": true,
@@ -71,7 +72,8 @@
       "price": "1999.99 €",
       "shop": "BreakTheCase",
       "title": "One Piece Card Game - THE BEST PRB01 Display - Englisch",
-      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-best-prb01-display-englisch-1"
+      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-best-prb01-display-englisch-1",
+      "was_available": true
     },
     "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-the-best-vol-2-booster-display-prb02-englisch": {
       "available": false,
@@ -87,7 +89,8 @@
       "price": "340.00 €",
       "shop": "BreakTheCase",
       "title": "One Piece Card Game - THE WORLD'S STRONGEST WARRIORS - Booster Display [OP-17] - Englisch",
-      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-worlds-strongest-warriors-booster-display-op-17-englisch"
+      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-worlds-strongest-warriors-booster-display-op-17-englisch",
+      "was_available": true
     },
     "Card Collector|https://card-collector.net/products/dragon-ball-super-card-game-fusion-world-fb12-display-englisch-ab-11-12-2026": {
       "available": false,
@@ -104,7 +107,8 @@
       "price": "120.00 €",
       "shop": "Card Collector",
       "title": "Dragon Ball Super Card Game - Fusion World ST-02 Story Booster Display (20 Packs) Englisch ab 15.01.2027",
-      "url": "https://card-collector.net/products/dragon-ball-super-card-game-fusion-world-tory-st-02-booster-display-20-packs-englisch-ab-15-01-2027"
+      "url": "https://card-collector.net/products/dragon-ball-super-card-game-fusion-world-tory-st-02-booster-display-20-packs-englisch-ab-15-01-2027",
+      "was_available": false
     },
     "Card Collector|https://card-collector.net/products/one-piece-card-game-eb-06-extra-booster-display-24-packs-englisch-ab-29-01-2026": {
       "available": false,
@@ -112,7 +116,8 @@
       "price": "120.00 €",
       "shop": "Card Collector",
       "title": "One Piece Card Game - EB-06 Extra Booster Display (24 Packs) Englisch ab 29.01.2027",
-      "url": "https://card-collector.net/products/one-piece-card-game-eb-06-extra-booster-display-24-packs-englisch-ab-29-01-2026"
+      "url": "https://card-collector.net/products/one-piece-card-game-eb-06-extra-booster-display-24-packs-englisch-ab-29-01-2026",
+      "was_available": false
     },
     "Card Collector|https://card-collector.net/products/one-piece-card-game-op-18-booster-display-24-packs-englisch-ab-20-11-2026": {
       "available": false,
@@ -250,7 +255,8 @@
       "price": "149.99 €",
       "shop": "Cardlantis",
       "title": "One Piece Card Game - EB-06 Extra Booster Display Englisch – Preorder - ETA: 29.01.2027",
-      "url": "https://cardlantis.de/products/one-piece-card-game-eb-06-extra-booster-display-englisch-preorder-eta-29-01-2027"
+      "url": "https://cardlantis.de/products/one-piece-card-game-eb-06-extra-booster-display-englisch-preorder-eta-29-01-2027",
+      "was_available": true
     },
     "Cardlantis|https://cardlantis.de/products/one-piece-card-game-extra-booster-display-op18-englisch-preorder-eta-20-11-2026": {
       "available": true,
@@ -499,7 +505,8 @@
       "price": "359.99 €",
       "shop": "FantasiaCards",
       "title": "One Piece Card Game - EB03 - Heroines Edition - Display [ENG]",
-      "url": "https://fantasiacards.de/products/one-piece-card-game-eb03-heroines-edition-display-eng"
+      "url": "https://fantasiacards.de/products/one-piece-card-game-eb03-heroines-edition-display-eng",
+      "was_available": true
     },
     "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-eb05-heroines-edition-vol-2-display-eng": {
       "available": true,
@@ -549,7 +556,8 @@
       "price": "149.99 €",
       "shop": "Feenturm",
       "title": "Dragon Ball Super Card Game – Fusion World FB10 Booster Display - Cross Force – Englisch",
-      "url": "https://feenturm.de/products/dragonball-super-card-game-fusion-world-fb10-booster-display-englisch"
+      "url": "https://feenturm.de/products/dragonball-super-card-game-fusion-world-fb10-booster-display-englisch",
+      "was_available": false
     },
     "Feenturm|https://feenturm.de/products/one-piece-tcg-booster-displays-op-17-24-packs-en-jetzt-vorbestellen": {
       "available": false,
@@ -557,7 +565,8 @@
       "price": "149.99 €",
       "shop": "Feenturm",
       "title": "One Piece TCG - Booster Displays OP-17 (24 Booster) - english - jetzt vorbestellen",
-      "url": "https://feenturm.de/products/one-piece-tcg-booster-displays-op-17-24-packs-en-jetzt-vorbestellen"
+      "url": "https://feenturm.de/products/one-piece-tcg-booster-displays-op-17-24-packs-en-jetzt-vorbestellen",
+      "was_available": false
     },
     "GoodGameGuys|https://www.goodgameguys.de/dragon-ball-super-fusion-world-fb11-booster-display-englisch.html": {
       "available": false,
