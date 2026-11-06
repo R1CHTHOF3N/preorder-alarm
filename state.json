@@ -48,7 +48,8 @@
       "price": "240.00 €",
       "shop": "BreakTheCase",
       "title": "One Piece Card Game - ADVENTURE ON KAMI'S ISLAND - Booster Display [OP-15-EB04] - Englisch",
-      "url": "https://www.breakthecase.de/products/one-piece-card-game-adventure-on-kamis-island-booster-display-op-15-eb04-englisch"
+      "url": "https://www.breakthecase.de/products/one-piece-card-game-adventure-on-kamis-island-booster-display-op-15-eb04-englisch",
+      "was_available": true
     },
     "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-op16-the-time-of-battle-booster-display-englisch-en": {
       "available": true,
@@ -64,7 +65,8 @@
       "price": "230.00 €",
       "shop": "BreakTheCase",
       "title": "One Piece Card Game - THE AZURE SEA’S SEVEN - Booster Display [OP-14-EB04] - Englisch",
-      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-azure-sea-s-seven-booster-display-op-14-eb04-englisch"
+      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-azure-sea-s-seven-booster-display-op-14-eb04-englisch",
+      "was_available": true
     },
     "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-the-best-prb01-display-englisch-1": {
       "available": true,
@@ -81,7 +83,8 @@
       "price": "400.00 €",
       "shop": "BreakTheCase",
       "title": "One Piece Card Game - THE BEST Vol. 2 - Booster Display – PRB02 - Englisch",
-      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-best-vol-2-booster-display-prb02-englisch"
+      "url": "https://www.breakthecase.de/products/one-piece-card-game-the-best-vol-2-booster-display-prb02-englisch",
+      "was_available": false
     },
     "BreakTheCase|https://www.breakthecase.de/products/one-piece-card-game-the-worlds-strongest-warriors-booster-display-op-17-englisch": {
       "available": true,
@@ -125,7 +128,8 @@
       "price": "120.00 €",
       "shop": "Card Collector",
       "title": "One Piece Card Game - OP-18 Booster Display (24 Packs) Englisch ab 20.11.2026",
-      "url": "https://card-collector.net/products/one-piece-card-game-op-18-booster-display-24-packs-englisch-ab-20-11-2026"
+      "url": "https://card-collector.net/products/one-piece-card-game-op-18-booster-display-24-packs-englisch-ab-20-11-2026",
+      "was_available": false
     },
     "Card Collector|https://card-collector.net/products/one-piece-card-game-op-19-booster-display-24-packs-englisch-ab-05-03-2027": {
       "available": false,
@@ -238,7 +242,8 @@
       "price": "169.90 €",
       "shop": "Cardcosmos",
       "title": "One Piece Card Game - OP18 The Dominance of God Booster Display - EN",
-      "url": "https://cardcosmos.de/products/one-piece-card-game-op18-the-dominance-of-god-booster-display-englisch"
+      "url": "https://cardcosmos.de/products/one-piece-card-game-op18-the-dominance-of-god-booster-display-englisch",
+      "was_available": false
     },
     "Cardcosmos|https://cardcosmos.de/products/one-piece-card-game-op19-booster-display-englisch": {
       "available": false,
@@ -264,7 +269,8 @@
       "price": "199.99 €",
       "shop": "Cardlantis",
       "title": "One Piece Card Game Booster Display OP18 - Englisch - Preorder - ETA: 20.11.2026",
-      "url": "https://cardlantis.de/products/one-piece-card-game-extra-booster-display-op18-englisch-preorder-eta-20-11-2026"
+      "url": "https://cardlantis.de/products/one-piece-card-game-extra-booster-display-op18-englisch-preorder-eta-20-11-2026",
+      "was_available": true
     },
     "Cardlantis|https://cardlantis.de/products/one-piece-card-game-op19-booster-display-englisch-preorder-eta-05-03-2027": {
       "available": true,
@@ -548,7 +554,8 @@
       "price": "379.99 €",
       "shop": "FantasiaCards",
       "title": "One Piece Card Game - PRB02 - Display [ENG]",
-      "url": "https://fantasiacards.de/products/one-piece-card-game-prb02-display-eng"
+      "url": "https://fantasiacards.de/products/one-piece-card-game-prb02-display-eng",
+      "was_available": true
     },
     "Feenturm|https://feenturm.de/products/dragonball-super-card-game-fusion-world-fb10-booster-display-englisch": {
       "available": false,
