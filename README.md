@@ -113,8 +113,8 @@ bestellbar ist, und pingt dann `@everyone` im PS5-Kanal. Teurere Angebote (Wiede
 Marktplatz-Händler, „1000 €+“) werden **nie** gemeldet. UVP-Stand: seit 2. April 2026 899,99 €
 (vorher 799,99 €) – ändert Sony den Preis, oben in `ps5pro.py` `UVP` anpassen.
 
-**Shops:** PlayStation Direct, MediaMarkt, Saturn, Alternate, Müller (alle liefern innerhalb DE).
-Nicht dabei, weil sie automatische Abfragen blocken oder keine echten Daten zeigen: Amazon, Otto,
+**Shops:** PlayStation Direct, Alternate, Müller (alle liefern innerhalb DE).
+Nicht dabei, weil sie automatische Abfragen (bzw. die GitHub-Server) blocken: MediaMarkt, Saturn, Amazon, Otto,
 Cyberport, Galaxus, GameStop, Kaufland, Euronics, Medimax, notebooksbilliger, idealo/geizhals.
 
 | Nachricht | Bedeutung |

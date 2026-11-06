@@ -38,8 +38,7 @@ HEADERS = {
 # Produktseiten der normalen PS5 Pro (2 TB, ohne Laufwerk). Alle liefern innerhalb Deutschlands.
 SHOPS = {
     "PlayStation Direct": "https://direct.playstation.com/de-de/buy-consoles/playstation5-pro-console",
-    "MediaMarkt": "https://www.mediamarkt.de/de/product/_sony-playstationr5-pro-2-tb-konsole-3018022.html",
-    "Saturn": "https://www.saturn.de/de/product/_sony-playstationr5-pro-2-tb-konsole-3018022.html",
+    # MediaMarkt und Saturn blocken die GitHub-Server (403 Forbidden) und sind deshalb nicht dabei.
     "Alternate": "https://www.alternate.de/Sony-Interactive-Entertainment/"
                  "PlayStation-5-Pro-2-TB-E-Chassis-Spielkonsole/html/product/100160951",
     "Müller": "https://www.mueller.de/p/playstation5-pro-konsole-2-tb-IPN3068364/",
