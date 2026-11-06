@@ -1,0 +1,27 @@
+{
+  "errors": {
+    "Alternate": 0,
+    "Müller": 0,
+    "PlayStation Direct": 0
+  },
+  "heartbeat": "2026-11-06",
+  "items": {
+    "Alternate": {
+      "availability": "OutOfStock",
+      "available": false,
+      "price": 899.99
+    },
+    "Müller": {
+      "availability": "OutOfStock",
+      "available": false,
+      "price": 899.0
+    },
+    "PlayStation Direct": {
+      "availability": "OutOfStock",
+      "available": false,
+      "price": 899.99
+    }
+  },
+  "status_week": "2026-W45",
+  "version": 2
+}
