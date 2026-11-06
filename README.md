@@ -126,7 +126,7 @@ Cyberport, Galaxus, GameStop, Kaufland, Euronics, Medimax, notebooksbilliger, id
 | 💓 Wochen-Check | Lebenszeichen mit aktuellem Stand aller Shops |
 
 **Einrichtung:** Im PS5-Kanal (Kanal-Einstellungen → Integrationen → Webhooks → Neuer Webhook)
-Webhook-URL kopieren und in GitHub als Secret **`DISCORD_WEBHOOK_PS5PRO`** speichern
+Webhook-URL kopieren und in GitHub als Secret **`DISCORD_WEBHOOK_URL_PS5PRO`** speichern
 (Settings → Secrets and variables → Actions). Dann Actions → **PS5-Pro-Check** → Run workflow.
 
 ---
@@ -150,7 +150,7 @@ damit auch Nachlieferungen älterer Produkte auffallen (spätestens nach ~50 Min
 **Shops:** Cardcosmos, FantasiaCards, Cardlantis, BreakTheCase, Feenturm, Play-Maniac, Yonko TCG, Card Collector.
 Nicht dabei: Pokémon Center (harte Bot-Sperre durch Imperva), Amazon, Smyths, Thalia, Kaufland (blocken ebenfalls).
 
-**Einrichtung:** Im Pokémon-Kanal einen Webhook anlegen und in GitHub als Secret **`DISCORD_WEBHOOK_POKEMON`** speichern.
+**Einrichtung:** Im Pokémon-Kanal einen Webhook anlegen und in GitHub als Secret **`POKEMON_TRAINER`** speichern.
 
 ---
 

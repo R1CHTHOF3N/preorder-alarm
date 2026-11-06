@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      DISCORD_WEBHOOK_POKEMON: ${{ secrets.DISCORD_WEBHOOK_POKEMON }}
+      DISCORD_WEBHOOK_POKEMON: ${{ secrets.POKEMON_TRAINER }}
     steps:
       - uses: actions/checkout@v5
 

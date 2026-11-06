@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      DISCORD_WEBHOOK_PS5PRO: ${{ secrets.DISCORD_WEBHOOK_PS5PRO }}
+      DISCORD_WEBHOOK_PS5PRO: ${{ secrets.DISCORD_WEBHOOK_URL_PS5PRO }}
     steps:
       - uses: actions/checkout@v5
 
