@@ -25,7 +25,7 @@ PING = "@everyone"
 ERROR_ALERT_AFTER = 4      # bei 5-Min-Takt ≈ 20 Min. Fehler am Stück, bevor gewarnt wird
 ERROR_REMIND_EVERY = 144   # danach Erinnerung alle ≈ 12 Std.
 
-STATE_VERSION = 1
+STATE_VERSION = 2  # erhöhen -> nächster Lauf schickt neue Übersicht
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ps5pro_state.json")
 HEADERS = {
     # Ein normaler Browser-Kennung, sonst blocken einige Shops schon die erste Anfrage.
@@ -111,6 +111,18 @@ def check(name, url):
         # PlayStation Direct schaltet bei Drops eine Warteschlange vor -> sofort melden.
         return {"price": UVP, "available": True, "queue": True}
     price, availability = main_offer(html)
+    if name in ("MediaMarkt", "Saturn"):
+        # Deren schema.org-Daten sagen oft "InStock", obwohl die Seite "bald wieder verfügbar" zeigt.
+        # Maßgeblich ist der Online-Status des Produkts selbst (nicht der Marktplatz-Angebote).
+        product_id = re.search(r"-(\d+)\.html", url).group(1)
+        m = re.search(
+            rf'CofrOnlineStatusFeature:\w+:de:{product_id}\\?":\{{[^{{}}]*?'
+            r'"isAvailableAndBuyable\\?":(true|false)[^{}]*?"onlineStatus\\?":\\?"(\w+)',
+            html.replace('\\"', '"'))
+        if not m:
+            raise LayoutError("Online-Status des Produkts nicht gefunden")
+        buyable = m.group(1) == "true" and m.group(2) == "AVAILABLE"
+        availability = "InStock" if buyable else m.group(2)
     return {
         "price": price,
         "available": availability in ("InStock", "PreOrder", "LimitedAvailability", "OnlineOnly"),
