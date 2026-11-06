@@ -1,7 +1,7 @@
 # Preorder-Alarm
 
 Prüft alle 10 Minuten deutsche Shops auf **englische Displays** von Dragon Ball Fusion World und
-One Piece und schickt eine Discord-Nachricht, sobald etwas neu gelistet oder bestellbar wird.
+One Piece und schickt eine Discord-Nachricht, sobald ein Display bestellbar wird (vorrätig, normaler Preis).
 Läuft kostenlos auf GitHub, auch wenn dein PC aus ist.
 
 **Shops (12, alle mit deutschem Impressum + USt-ID, Versand innerhalb DE ca. 4–7 €):**
@@ -30,12 +30,12 @@ Meldungen kommen als farbige Karten mit `@everyone` – außer dem 💓 Wochen-C
 **Keine Wucherpreise:** Als „UVP“ merkt sich das Skript pro Set den günstigsten Preis, den je ein Shop
 verlangt hat (steht klein unter jeder Meldung). Angebote mehr als 25 % darüber werden nicht gemeldet.
 Ist ein Set schon so gehypt, dass es nirgends mehr normal zu haben ist, zählt der günstigste Preis
-der Serie (z. B. das billigste OP-Set). Ist der Preis noch unbekannt („Preis folgt“), wird immer gemeldet.
+der Serie (z. B. das billigste OP-Set). Ist der Preis noch unbekannt, wird trotzdem gemeldet.
+Nicht vorrätige Displays und Verlosungen werden nie gemeldet.
 
 | Nachricht | Bedeutung |
 |---|---|
 | 🟢 FB13 jetzt bestellbar! / wieder bestellbar! | Kaufen-Button ist da → sofort zuschlagen |
-| 🆕 FB13 neu gelistet | Seite existiert, aber nur „Benachrichtigen“ |
 | ⚠️ Shop lässt sich nicht prüfen | 3× hintereinander (~30 Min.) Fehler oder Shop-Seite umgebaut; Erinnerung alle ~12 Std. |
 | ✅ Shop wird wieder geprüft | Entwarnung |
 | ❌ Preorder-Alarm ist abgestürzt | Der ganze Lauf ist fehlgeschlagen (nur beim ersten Mal gemeldet) |

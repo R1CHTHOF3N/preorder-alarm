@@ -378,7 +378,7 @@ def save_state(state):
 # ---------------------------------------------------------------------------
 
 COLOR = {
-    "buy": 0x2ECC71, "new": 0x3498DB, "error": 0xE74C3C, "info": 0x95A5A6,
+    "buy": 0x2ECC71, "error": 0xE74C3C, "info": 0x95A5A6,
     "Dragon Ball": 0xF39C12, "One Piece": 0xC0392B,
 }
 GAME_ICON = {"Dragon Ball": "🐉", "One Piece": "🏴‍☠️"}
@@ -587,7 +587,7 @@ def main():
     errors = dict(old.get("errors", {}))
     series_max = dict(old.get("series_max", {}))
     # Shops, die schon mal erfolgreich geprüft wurden. Ein neuer (oder beim ersten Lauf
-    # ausgefallener) Shop wird beim ersten Erfolg still übernommen statt alles als 🆕 zu melden.
+    # ausgefallener) Shop wird beim ersten Erfolg still übernommen statt alles als neu zu melden.
     known_shops = set(old.get("known_shops", []))
     ref = dict(old.get("ref_price", {}))
     codes = codes_to_search(series_max)
@@ -646,22 +646,22 @@ def main():
 
         for key, item in found.items():
             before = items.get(key)
-            if not silent:
-                if before is None and item["available"]:
-                    changes.append(("buy", "jetzt bestellbar!", item, ""))
-                elif before is None:
-                    changes.append(("new", "neu gelistet", item, "Noch nicht bestellbar."))
-                elif item["available"] and not before["available"]:
-                    changes.append(("buy", "wieder bestellbar!", item, ""))
+            # Gemeldet wird nur, was man wirklich kaufen kann (nicht vorrätig = keine Meldung).
+            if not silent and item["available"]:
+                if before is None:
+                    changes.append(("jetzt bestellbar!", item))
+                elif not before["available"]:
+                    # "wieder" nur, wenn es schon mal bestellbar war (Nachschub)
+                    changes.append(("wieder bestellbar!" if before.get("was_available") else "jetzt bestellbar!", item))
+            item["was_available"] = item["available"] or bool((before or {}).get("was_available"))
             items[key] = item
 
     update_ref_prices(ref, items)
-    for kind, text, item, note in changes:
+    for text, item in changes:
         if overpriced(item, ref):
             print(f"Überteuert, nicht gemeldet: {item['shop']} {item['title']} {item['price']}")
             continue
-        icon = "🟢" if kind == "buy" else "🆕"
-        messages.append(event(kind, f"{icon} {main_code(item)} {text}", item, note, ref))
+        messages.append(event("buy", f"🟢 {main_code(item)} {text}", item, "", ref))
 
     today = datetime.date.today()
     week = f"{today.isocalendar()[0]}-W{today.isocalendar()[1]:02d}"
