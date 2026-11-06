@@ -39,10 +39,7 @@ KINDS = {
         "words": ["booster bundle", "booster-bundle", "boosterbundle"],
         "max": 44.99,    # 6 Booster
     },
-    "Booster": {
-        "words": ["booster"],
-        "max": 6.99,     # ein einzelnes Booster-Pack
-    },
+    # Einzelne Booster bewusst nicht: werden ständig nachgefüllt und würden dauernd pingen.
 }
 KIND_ORDER = list(KINDS)  # bei mehreren Treffern gewinnt die erste (spezifischere) Art
 
@@ -90,7 +87,7 @@ SHOPS = {
 # Pro Lauf und Shop: 1x neueste Produkte + 1 Suche im Wechsel (Shopify drosselt sonst).
 # So fallen neue Produkte sofort auf, Nachlieferungen älterer Produkte nach spätestens ~50 Min.
 SEARCHES = ["pokemon display", "pokemon top trainer box", "pokemon elite trainer box",
-            "pokemon booster bundle", "pokemon booster"]
+            "pokemon booster bundle"]
 
 
 class LayoutError(Exception):
@@ -362,7 +359,7 @@ def main():
         text = "\n".join(lines) or "Gerade nichts zum Normalpreis bestellbar."
         title = "⚡ Pokémon-Alarm ist aktiv" if first_run else "💓 Wochen-Check"
         quiet.append(card("info", title,
-                          "Gemeldet werden Displays, Booster, Top-Trainer-/Elite-Trainer-Boxen und "
+                          "Gemeldet werden Displays, Top-Trainer-/Elite-Trainer-Boxen und "
                           "Booster-Bundles (🇩🇪/🇬🇧) – nur zum normalen Preis.\n"
                           "**Gerade zum Normalpreis bestellbar:**" + text,
                           footer=f"{len(SHOPS)} Shops: " + ", ".join(SHOPS)))
