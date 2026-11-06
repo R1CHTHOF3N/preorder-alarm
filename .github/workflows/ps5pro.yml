@@ -1,0 +1,38 @@
+name: PS5-Pro-Check
+
+on:
+  schedule:
+    # Alle 5 Minuten – PS5-Pro-Drops sind oft schnell wieder weg.
+    - cron: "*/5 * * * *"
+  workflow_dispatch: # Start per Knopfdruck unter "Actions"
+
+permissions:
+  contents: write # um ps5pro_state.json zurückzuspeichern
+
+concurrency:
+  group: ps5pro-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DISCORD_WEBHOOK_PS5PRO: ${{ secrets.DISCORD_WEBHOOK_PS5PRO }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Shops prüfen
+        timeout-minutes: 5
+        run: python3 ps5pro.py
+
+      - name: Stand speichern
+        run: |
+          git config user.name "preorder-alarm"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ps5pro_state.json
+          git diff --cached --quiet && exit 0
+          git commit -m "PS5-Pro-Stand aktualisiert"
+          # Der Preorder-Check pusht in dasselbe Repo -> bei Konflikt kurz neu holen und nochmal.
+          for i in 1 2 3; do git pull --rebase -q && git push && exit 0; sleep 5; done
+          exit 1

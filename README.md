@@ -103,3 +103,28 @@ python check.py
 ```
 Ohne `DISCORD_WEBHOOK_URL` wird nur in der Konsole ausgegeben. `state.json` danach löschen,
 damit der erste Lauf auf GitHub die Übersicht nach Discord schickt.
+
+---
+
+# PS5-Pro-Alarm (zweiter Kanal)
+
+`ps5pro.py` prüft **alle 5 Minuten**, ob die PS5 Pro irgendwo zum **UVP von 899,99 €** (oder günstiger)
+bestellbar ist, und pingt dann `@everyone` im PS5-Kanal. Teurere Angebote (Wiederverkäufer,
+Marktplatz-Händler, „1000 €+“) werden **nie** gemeldet. UVP-Stand: seit 2. April 2026 899,99 €
+(vorher 799,99 €) – ändert Sony den Preis, oben in `ps5pro.py` `UVP` anpassen.
+
+**Shops:** PlayStation Direct, MediaMarkt, Saturn, Alternate, Müller (alle liefern innerhalb DE).
+Nicht dabei, weil sie automatische Abfragen blocken oder keine echten Daten zeigen: Amazon, Otto,
+Cyberport, Galaxus, GameStop, Kaufland, Euronics, Medimax, notebooksbilliger, idealo/geizhals.
+
+| Nachricht | Bedeutung |
+|---|---|
+| 🟢 PS5 Pro zum UVP bei … | bestellbar für max. 899,99 € → sofort zuschlagen |
+| 🚦 PlayStation Direct: Warteschlange aktiv | Sony hat die Warteschlange eingeschaltet = Drop |
+| 🔴 … wieder weg | ausverkauft oder teurer geworden (ohne Ping) |
+| ⚠️ / ✅ | Shop ~20 Min. nicht prüfbar / wieder ok (ohne Ping) |
+| 💓 Wochen-Check | Lebenszeichen mit aktuellem Stand aller Shops |
+
+**Einrichtung:** Im PS5-Kanal (Kanal-Einstellungen → Integrationen → Webhooks → Neuer Webhook)
+Webhook-URL kopieren und in GitHub als Secret **`DISCORD_WEBHOOK_PS5PRO`** speichern
+(Settings → Secrets and variables → Actions). Dann Actions → **PS5-Pro-Check** → Run workflow.
