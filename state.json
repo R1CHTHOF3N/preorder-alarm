@@ -5,7 +5,7 @@
     "Card Corner": 0,
     "Cardcosmos": 0,
     "Cardlantis": 0,
-    "Comic Planet": 0,
+    "Comic Planet": 1,
     "Daesu Cards": 0,
     "FantasiaCards": 0,
     "Feenturm": 0,
@@ -487,6 +487,15 @@
       "url": "https://daesu-cards.de/products/one-piece-card-game-premium-extra-booster-display-peb-01-12-booster-englisch-preorder-eta-23-04-2027",
       "was_available": false
     },
+    "FantasiaCards|https://fantasiacards.de/products/dragon-ball-super-card-game-fusion-world-fb11-display-eng-vorbestellung-release-september-2026": {
+      "available": true,
+      "game": "Dragon Ball",
+      "price": "199.99 €",
+      "shop": "FantasiaCards",
+      "title": "Dragon Ball Super Card Game - Fusion World - FB11 - Brightness of Hope - Display [ENG]",
+      "url": "https://fantasiacards.de/products/dragon-ball-super-card-game-fusion-world-fb11-display-eng-vorbestellung-release-september-2026",
+      "was_available": true
+    },
     "FantasiaCards|https://fantasiacards.de/products/dragon-ball-super-card-game-fusion-world-fb12-display-eng-vorbestellung-release-11-12-2026": {
       "available": false,
       "game": "Dragon Ball",
@@ -547,6 +556,15 @@
       "title": "One Piece Card Game - OP17 - The Worlds Strongest Warriors - Display [ENG]",
       "url": "https://fantasiacards.de/products/one-piece-card-game-op17-the-worlds-strongest-warriors-display-eng",
       "was_available": false
+    },
+    "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-op17-the-worlds-strongest-warriors-display-eng-kopie": {
+      "available": true,
+      "game": "One Piece",
+      "price": "329.99 €",
+      "shop": "FantasiaCards",
+      "title": "One Piece Card Game - OP17 - The Worlds Strongest Warriors - Display [ENG]",
+      "url": "https://fantasiacards.de/products/one-piece-card-game-op17-the-worlds-strongest-warriors-display-eng-kopie",
+      "was_available": true
     },
     "FantasiaCards|https://fantasiacards.de/products/one-piece-card-game-prb02-display-eng": {
       "available": true,
