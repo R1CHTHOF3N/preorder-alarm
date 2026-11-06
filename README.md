@@ -151,3 +151,26 @@ damit auch Nachlieferungen älterer Produkte auffallen (spätestens nach ~50 Min
 Nicht dabei: Pokémon Center (harte Bot-Sperre durch Imperva), Amazon, Smyths, Thalia, Kaufland (blocken ebenfalls).
 
 **Einrichtung:** Im Pokémon-Kanal einen Webhook anlegen und in GitHub als Secret **`DISCORD_WEBHOOK_POKEMON`** speichern.
+
+---
+
+# Zuverlässiger Takt (wichtig!)
+
+GitHub startet **geplante** Läufe (`schedule`) bei kostenlosen Repos stark verzögert – in der Praxis oft nur
+alle paar Stunden. Darum stößt ein externer, kostenloser Dienst die Läufe per Knopfdruck-Schnittstelle an
+(`workflow_dispatch`), die startet innerhalb von Sekunden. Der `schedule` bleibt nur als Notreserve drin.
+
+1. **GitHub-Token:** github.com → Settings → Developer settings → Personal access tokens → **Fine-grained tokens**
+   → Generate new token. Repository access: **Only select repositories → preorder-alarm**.
+   Permissions → Repository permissions → **Actions: Read and write**. Laufzeit max. (z. B. 1 Jahr) – im Kalender notieren.
+2. **cron-job.org** (kostenlos) → Konto anlegen → **Create cronjob**, dreimal (je Workflow eins):
+
+   | Titel | URL | Takt |
+   |---|---|---|
+   | PS5 Pro | `https://api.github.com/repos/R1CHTHOF3N/preorder-alarm/actions/workflows/ps5pro.yml/dispatches` | alle 2 Minuten |
+   | Pokémon | `https://api.github.com/repos/R1CHTHOF3N/preorder-alarm/actions/workflows/pokemon.yml/dispatches` | alle 5 Minuten |
+   | One Piece / Dragon Ball | `https://api.github.com/repos/R1CHTHOF3N/preorder-alarm/actions/workflows/check.yml/dispatches` | alle 5 Minuten |
+
+   Jeweils unter **Advanced**: Request method **POST**, Request body `{"ref":"main"}`, Headers:
+   `Accept: application/vnd.github+json` und `Authorization: Bearer <dein Token>`.
+   Erwartete Antwort: **204** (= Lauf gestartet).
