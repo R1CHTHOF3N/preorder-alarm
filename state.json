@@ -2,10 +2,10 @@
   "errors": {
     "BreakTheCase": 0,
     "Card Collector": 0,
-    "Card Corner": 5,
+    "Card Corner": 0,
     "Cardcosmos": 0,
     "Cardlantis": 0,
-    "Comic Planet": 1,
+    "Comic Planet": 0,
     "Daesu Cards": 0,
     "FantasiaCards": 0,
     "Feenturm": 0,
@@ -13,7 +13,7 @@
     "Play-Maniac": 0,
     "Yonko TCG": 0
   },
-  "heartbeat": "2026-11-05",
+  "heartbeat": "2026-11-06",
   "items": {
     "BreakTheCase|https://www.breakthecase.de/products/dragon-ball-fusion-world-fb10-cross-force-booster-box-display-englisch": {
       "available": false,
@@ -154,7 +154,7 @@
     "Card Corner|https://www.card-corner.de/One-Piece-EB05-Display-EN": {
       "available": false,
       "game": "One Piece",
-      "price": "?",
+      "price": "224.99 €",
       "shop": "Card Corner",
       "title": "One Piece EB05 Display (EN)",
       "url": "https://www.card-corner.de/One-Piece-EB05-Display-EN"
@@ -176,7 +176,7 @@
       "url": "https://www.card-corner.de/One-Piece-OP16-Display-Englisch"
     },
     "Card Corner|https://www.card-corner.de/One-Piece-OP17-Display-Englisch": {
-      "available": false,
+      "available": true,
       "game": "One Piece",
       "price": "299.99 €",
       "shop": "Card Corner",
@@ -638,6 +638,30 @@
     "Play-Maniac",
     "Yonko TCG"
   ],
+  "ref_price": {
+    "EB03": 279.99,
+    "EB04": 179.95,
+    "EB05": 119.99,
+    "EB06": 114.99,
+    "FB10": 89.99,
+    "FB11": 94.99,
+    "FB12": 94.99,
+    "FB13": 129.99,
+    "OP15": 199.99,
+    "OP16": 189.99,
+    "OP17": 149.99,
+    "OP18": 114.99,
+    "OP19": 119.99,
+    "OP20": 119.99,
+    "PEB01": 120.0,
+    "PRB01": 799.99,
+    "PRB02": 109.95,
+    "SB01": 129.0,
+    "SB02": 129.99,
+    "ST01": 399.99,
+    "ST02": 120.0,
+    "ST03": 99.99
+  },
   "series_max": {
     "Dragon Ball|FB": 13,
     "Dragon Ball|SB": 2,
